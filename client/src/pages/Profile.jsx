@@ -1,7 +1,22 @@
+import {useState, useEffect} from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function Profile() {
+const [appointments, setAppointments] = useState([])
+
+useEffect(() => {
+    fetch('http://127.0.0.1:5555/appointments')
+    .then(response => {
+        if(!response.ok){
+            throw new Error(`Could not GET Appointments data!: ${response.status}`)
+        }
+        return response.json()
+    })
+    .then((data) => setAppointments(data))
+    .catch(error=>console.error(error));
+    },[])
+
     return(
     <>
     <NavBar/>
@@ -34,8 +49,20 @@ function Profile() {
                                 <th>ID</th>
                                 <th>Service Date</th>
                                 <th>Status</th>
+                                <th>License Plate</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {console.log(appointments)}
+                            {appointments.map((app)=> {
+                                return(<tr>
+                                        <td>{app.id}</td>
+                                        <td>{app.service_date}</td>
+                                        <td>{app.status}</td>
+                                        <td>{app.vehicle.license_plate}</td>
+                                    </tr> )
+                            })}
+                        </tbody>
                     </table>
                 </div>
             </div>

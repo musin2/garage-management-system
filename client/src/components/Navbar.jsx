@@ -12,7 +12,7 @@ function NavBar() {
                 <div className="collapse navbar-collapse offset-3" id="mainNavBar">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
                     <li className="nav-item ">
-                    <Link to={"/"} className="nav-link active" aria-current="page" >Home</Link>
+                    <Link to={"/home"} className="nav-link active" aria-current="page" >Home</Link>
                     </li>
                     <li className="nav-item">
                     <Link to={"/appointments"} className="nav-link active" >Appointments</Link>
