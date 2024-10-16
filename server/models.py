@@ -18,6 +18,8 @@ class User(db.Model,SerializerMixin):
     vehicles = db.relationship('Vehicle', back_populates='owner', lazy=True)
     appointments = db.relationship('Appointment', back_populates='user', lazy=True)
 
+    serialize_rules = ('-vehicles.owner', '-appointments.user')
+
 
 # Vehicles Table (One-to-Many with Users)
 class Vehicle(db.Model,SerializerMixin):
@@ -37,6 +39,9 @@ class Vehicle(db.Model,SerializerMixin):
     services = db.relationship('ServiceVehicle', back_populates='vehicle', lazy=True)
     appointments = db.relationship('Appointment', back_populates='vehicle', lazy=True)
 
+    serialize_rules = ('-owner.vehicles', '-services.vehicle', '-appointments.vehicle')
+
+
 
 # Services Table
 class Service(db.Model,SerializerMixin):
@@ -49,6 +54,8 @@ class Service(db.Model,SerializerMixin):
 
     # Relationships
     vehicles = db.relationship('ServiceVehicle', back_populates='service', lazy=True)
+
+    serialize_rules = ('-vehicles.service',)
 
 
 # Service_Vehicles Table (Many-to-Many between Services and Vehicles)
@@ -67,9 +74,11 @@ class ServiceVehicle(db.Model,SerializerMixin):
     service = db.relationship('Service', back_populates='vehicles')
     vehicle = db.relationship('Vehicle', back_populates='services')
 
+    serialize_rules = ('-vehicle.services', '-service.vehicles')
+
 
 # Appointments Table (One-to-Many with Users and Vehicles)
-class Appointment(db.Model,SerializerMixin):
+class Appointment(db.Model):
     __tablename__ = 'appointments'
     id = db.Column(db.Integer, primary_key=True)
     service_date = db.Column(db.DateTime, nullable=False)
@@ -84,5 +93,19 @@ class Appointment(db.Model,SerializerMixin):
     user = db.relationship('User', back_populates='appointments')
     vehicle = db.relationship('Vehicle', back_populates='appointments')
 
-
-
+    # Custom method to serialize the Appointment model
+    def to_dict(self):
+     return {
+        'id': self.id,
+        'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+        'status': self.status,
+        'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+        'user': {
+            'id': self.user.id,
+            'name': self.user.name
+        },
+        'vehicle': {
+            'id': self.vehicle.id,
+            'make': self.vehicle.make
+        }
+    }
