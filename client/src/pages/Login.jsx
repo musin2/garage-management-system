@@ -19,8 +19,7 @@ const Login = ({setRole}) => {
       .then(response => {
         setRole(response.data.role);
         alert(response.data.message);
-        navigate('/appointments')
-
+        navigate('/home')
       })
       .catch(error => {
         console.error('Login error:', error); // Log the entire error object
