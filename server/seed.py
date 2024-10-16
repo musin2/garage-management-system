@@ -16,8 +16,8 @@ with app.app_context():
 
     # Creating users with roles
     print("Creating users...")
-    alice = User(name="Alice Johnson", email="alice@example.com", phone_number="1234567890", role="admin")
-    bob = User(name="Bob Smith", email="bob@example.com", phone_number="0987654321", role="customer")
+    alice = User(name="Alice Johnson", email="alice@example.com", phone_number="1234567890", password = "pass123", role="admin")
+    bob = User(name="Bob Smith", email="bob@example.com", phone_number="0987654321", password = "123123", role="customer")
     users = [alice, bob]
 
     # Creating vehicles for users

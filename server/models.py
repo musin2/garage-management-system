@@ -11,12 +11,29 @@ class User(db.Model,SerializerMixin):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
     role=db.Column(db.String(20),nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationships
     vehicles = db.relationship('Vehicle', back_populates='owner', lazy=True)
     appointments = db.relationship('Appointment', back_populates='user', lazy=True)
+    
+    #properties required by Flask Login manager
+    @property
+    def is_active(self):
+        return True
+    
+    def get_id(self):
+        return str(self.id)
+    
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
 
 
 # Vehicles Table (One-to-Many with Users)
@@ -36,6 +53,7 @@ class Vehicle(db.Model,SerializerMixin):
     owner = db.relationship('User', back_populates='vehicles')
     services = db.relationship('ServiceVehicle', back_populates='vehicle', lazy=True)
     appointments = db.relationship('Appointment', back_populates='vehicle', lazy=True)
+    
 
 
 # Services Table
