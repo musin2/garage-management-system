@@ -3,6 +3,7 @@
 from app import app
 from models import db, User, Vehicle, Service, Appointment, ServiceVehicle
 from datetime import datetime
+from werkzeug.security import generate_password_hash
 
 with app.app_context():
 
@@ -14,10 +15,22 @@ with app.app_context():
     Service.query.delete()
     User.query.delete()
 
-    # Creating users with roles
+    # Creating users with roles and hashed passwords
     print("Creating users...")
-    alice = User(name="Alice Johnson", email="alice@example.com", phone_number="1234567890", role="admin")
-    bob = User(name="Bob Smith", email="bob@example.com", phone_number="0987654321", role="customer")
+    alice = User(
+        name="Alice Johnson", 
+        email="alice@example.com", 
+        phone_number="1234567890", 
+        password=generate_password_hash("pass123"),  # Hash the password
+        role="admin"
+    )
+    bob = User(
+        name="Bob Smith", 
+        email="bob@example.com", 
+        phone_number="0987654321", 
+        password=generate_password_hash("123123"),  # Hash the password
+        role="customer"
+    )
     users = [alice, bob]
 
     # Creating vehicles for users
