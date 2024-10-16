@@ -124,6 +124,7 @@ class Appointment(db.Model):
         },
         'vehicle': {
             'id': self.vehicle.id,
-            'make': self.vehicle.make
+            'make': self.vehicle.make,
+            'license_plate': self.vehicle.license_plate
         }
     }
