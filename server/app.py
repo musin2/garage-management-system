@@ -7,6 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
 import json
+from flask_cors import CORS
+from flask import jsonify
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.environ.get(
@@ -146,40 +148,6 @@ def get_user_vehicles(user_id):
 
     return make_response(json.dumps(vehicle_data), 200)
 
-# Schedule Service Appointment
-@app.route('/appointments', methods=['POST'])
-def schedule_appointment():
-    data = request.get_json()
-    user_id = data['user_id']
-    vehicle_id = data['vehicle_id']
-    service_date = datetime.strptime(data['service_date'], "%Y-%m-%d %H:%M:%S")
-    status = 'scheduled'
-
-    # Check user and vehicle exist
-    user = User.query.get(user_id)
-    if user is None:
-        response_body = {"error": f"User with ID {user_id} does not exist."}
-        return make_response(json.dumps(response_body), 404)
-        
-    vehicle = Vehicle.query.get(vehicle_id)
-    if vehicle is None:
-        response_body = {"error": f"Vehicle with ID {vehicle_id} does not exist."}
-        return make_response(json.dumps(response_body), 404)
-
-    new_appointment = Appointment(user=user, vehicle=vehicle, service_date=service_date, status=status)
-    
-    try:
-        db.session.add(new_appointment)
-        db.session.commit()
-    except:
-        db.session.rollback()
-        response_body = {"error": "Could not schedule appointment. Please check the details."}
-        return make_response(json.dumps(response_body), 500)
-
-    response_body = {
-        'message': 'Appointment scheduled successfully!'
-    }
-    return make_response(json.dumps(response_body), 201)
 
 # View List of Services Offered by the Garage
 @app.route('/services', methods=['GET'])
@@ -236,28 +204,79 @@ def delete_service(service_id):
     return make_response(json.dumps(response_body), 200)
 
 # Garage Owner: View Customer Requests
+
+
+from flask import jsonify, request
+from datetime import datetime
+
 @app.route('/appointments', methods=['GET'])
 def view_appointments():
     appointments = Appointment.query.all()
     response_body = [a.to_dict() for a in appointments]
-    return make_response(json.dumps(response_body), 200)
+    return jsonify(response_body), 200
+
+
+# Schedule Service Appointment
+@app.route('/appointments', methods=['POST'])
+def schedule_appointment():
+    data = request.get_json()
+
+    user_id = data.get('user_id')
+    vehicle_id = data.get('vehicle_id')
+    service_date_str = data.get('service_date')
+
+    if not (user_id and vehicle_id and service_date_str):
+        return jsonify({"error": "Missing required data: 'user_id', 'vehicle_id', 'service_date'"}), 400
+
+    try:
+        service_date = datetime.strptime(service_date_str, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+        return jsonify({"error": "Invalid date format. Expected 'YYYY-MM-DD HH:MM:SS'"}), 400
+
+    status = 'scheduled'
+
+    # Check user and vehicle exist
+    user = User.query.get(user_id)
+    if user is None:
+        return jsonify({"error": f"User with ID {user_id} does not exist."}), 404
+        
+    vehicle = Vehicle.query.get(vehicle_id)
+    if vehicle is None:
+        return jsonify({"error": f"Vehicle with ID {vehicle_id} does not exist."}), 404
+
+    new_appointment = Appointment(user=user, vehicle=vehicle, service_date=service_date, status=status)
+
+    try:
+        db.session.add(new_appointment)
+        db.session.commit()
+        return jsonify({'message': 'Appointment scheduled successfully!'}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Could not schedule appointment. Please try again later."}), 500
 
 @app.route('/appointments/<int:appointment_id>', methods=['PATCH'])
-def mark_appointment_complete(appointment_id):
+def update_appointment_status(appointment_id):
     # Fetch the appointment by ID
     appointment = Appointment.query.get_or_404(appointment_id)
 
+    # Get the new status from the request body
+    data = request.get_json()
+    new_status = data.get('status')
+
+    # Validate the status
+    valid_statuses = ['complete', 'ongoing', 'scheduled']
+    if new_status not in valid_statuses:
+        return jsonify({"error": f"Invalid status. Allowed values are: {valid_statuses}"}), 400
+
     # Update the status
-    appointment.status = 'complete'
+    appointment.status = new_status
 
-    # Commit the changes to the database
-    db.session.commit()
-
-    response_body = {
-        'message': f'Appointment {appointment_id} marked as complete!'
-    }
-    return make_response(json.dumps(response_body), 200)
-
+    try:
+        db.session.commit()
+        return jsonify({'message': f'Appointment {appointment_id} updated to status: {new_status}!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Could not update appointment status."}), 500
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
