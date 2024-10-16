@@ -1,17 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import NavBar from './components/Navbar'
+import React, { useState } from "react";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Logout from "./pages/Logout";
+import NavBar from "./components/Navbar";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [role, setRole] = useState(null);
 
   return (
-    <>
-    <NavBar />
-      <h1>Home Page</h1>
-    </>
-  )
-}
+    <div>
+      {!role && (
+        <>
+          <Register />
+          <Login setRole={setRole} />
+        </>
+      )}
 
-export default App
+      {role === "customer" && (
+        <>
+          <NavBar />
+          <h1>Home Page</h1>
+          <Logout setRole={setRole} />
+        </>
+      )}
+
+      {role === "admin" && (
+        <>
+          <NavBar />
+          <h1>Home Page</h1>
+          <Logout setRole={setRole} />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default App;

@@ -1,7 +1,10 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 from models import db, User, Vehicle, Service, Appointment
 from datetime import datetime
 from flask_migrate import Migrate
+from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
 import json
 
@@ -10,31 +13,77 @@ DATABASE = os.environ.get(
     "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
+app.config['SECRET_KEY'] = 'secret_key'
 
+
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 migrate = Migrate(app, db)
-
 db.init_app(app)
+
+# User loader for Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# User Registration
+@app.route('/register', methods=['POST'])
+def register():
+    try:
+        data = request.get_json()
+        
+        hashed_password = generate_password_hash(data['password'])
+
+
+        new_user = User(
+            name=data['name'], 
+            email=data['email'], 
+            phone_number=data['phone_number'],
+            password=hashed_password,
+            role=data['role']
+            
+        )
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"message": "User registered successfully!"}), 201
+    
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of error
+        return jsonify({"error": str(e)}), 500
+    
+# User Login
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    user = User.query.filter_by(email=email).first()
+    
+    # if user and user.password == password:
+    if user and check_password_hash(user.password, password):
+        login_user(user)
+        return jsonify({"message": "Login successful"}), 200
+    return jsonify({"error": "Invalid credentials"}), 401
+
+
+@app.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({"message": "Logged out successfully!"}), 200
+
 
 @app.route('/')
 def index():
     return make_response('<h1>Garage routes</h1>', 200)
 
-# Register User and Manage Vehicle Information
-@app.route('/users', methods=['POST'])
-def register_user():
-    data = request.get_json()
-    new_user = User(name=data['name'], email=data['email'], phone_number=data['phone_number'],role=data['role'])
-    db.session.add(new_user)
-    db.session.commit()
-
-    response_body = {
-        'message': 'User registered successfully!'
-    }
-    return make_response(json.dumps(response_body), 201)
-
+# Manage Vehicle Information
 @app.route('/users/<int:user_id>/vehicles', methods=['POST'])
 def add_vehicle(user_id):
     data = request.get_json()
