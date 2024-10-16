@@ -3,6 +3,7 @@ from models import db, User, Vehicle, Service, Appointment
 from datetime import datetime
 from flask_migrate import Migrate
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
 import json
@@ -34,12 +35,15 @@ def load_user(user_id):
 def register():
     try:
         data = request.get_json()
+        
+        hashed_password = generate_password_hash(data['password'])
+
 
         new_user = User(
             name=data['name'], 
             email=data['email'], 
             phone_number=data['phone_number'],
-            password=data['password'],
+            password=hashed_password,
             role=data['role']
             
         )
@@ -61,7 +65,8 @@ def login():
 
     user = User.query.filter_by(email=email).first()
     
-    if user and user.password == password:
+    # if user and user.password == password:
+    if user and check_password_hash(user.password, password):
         login_user(user)
         return jsonify({"message": "Login successful"}), 200
     return jsonify({"error": "Invalid credentials"}), 401
