@@ -96,7 +96,7 @@ const Register = ({ setRole }) => {
               <label htmlFor="password">Password</label>
               </div>
               <div className="col-4">
-              <Field type="password" name="password"  className='form-control' placeholder='Enter Your Password'/>
+              <Field type="password" name="password"  className='form-control' placeholder='Enter Your Password '/>
               </div>
               <ErrorMessage name="password" component="div" />
             </div>

@@ -33,9 +33,9 @@ const App = () => {
       {!role ? (
         <>
           {showLogin ? (
-            <Register setRole={setRole} />
-          ) : (
             <Login setRole={setRole} />
+          ) : (
+            <Register setRole={setRole} />
           )}
           <button onClick={() => setShowLogin(!showLogin)}>
             {showLogin ? "Sign in" : "Sign up"}

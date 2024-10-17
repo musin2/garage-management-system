@@ -1,9 +1,10 @@
 import {useState, useEffect} from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Profile() {
-const [appointments, setAppointments] = useState([])
+const [appointments, setAppointments] = useState([]);
 
 useEffect(() => {
     fetch('http://127.0.0.1:5555/appointments')
@@ -13,7 +14,15 @@ useEffect(() => {
         }
         return response.json()
     })
-    .then((data) => setAppointments(data))
+    .then((data) => {
+        const uID = Cookies.get('user_id');
+        console.warn('User ID from cookie:', uID);
+        const filt = data.filter((app) =>app.user.id == uID)
+        setAppointments(filt)
+        // setAppointments(data)
+        // console.warn(data[0].user.id);
+        
+    })
     .catch(error=>console.error(error));
     },[])
 
@@ -26,10 +35,10 @@ useEffect(() => {
             <div className="col-4">
                 <div className="row">
                 <h4 className="offset-1">Profile</h4>
-                    <span><i class="bi bi-person-fill"></i> </span>
-                    <span><i class="bi bi-envelope-fill"></i> </span>
-                    <span><i class="bi bi-telephone-fill"></i> </span>
-                    <span><i class="bi bi-car-front-fill"></i> </span>
+                    <span><i className="bi bi-person-fill"></i>{Cookies.get('user_name')} </span>
+                    <span><i className="bi bi-envelope-fill"></i> {Cookies.get('user_email')}</span>
+                    <span><i className="bi bi-telephone-fill"></i> {Cookies.get('user_phone')}</span>
+                    <span><i className="bi bi-car-front-fill"></i> </span>
                     <button className="btn btn-outline-info">Edit Details</button>
                 </div>
             </div>

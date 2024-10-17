@@ -7,6 +7,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import About from "./pages/About.jsx";
+import CreateAppointment from "./pages/CreateAppointment.jsx";
 
 const routes = [
     {path:"/", element: <App/>, errorElement: <ErrorPage/>},
@@ -16,7 +17,8 @@ const routes = [
     {path: "/home", element: <Home/>, errorElement: <ErrorPage/>},
     {path: "/about", element: <About/>, errorElement: <ErrorPage/>},
     {path:"/register", element:<Register/>, errorElement: <ErrorPage/> },
-    {path:"/login" ,element:<Login/>, errorElement: <ErrorPage/>}
+    {path:"/login" ,element:<Login/>, errorElement: <ErrorPage/>},
+    {path: "/appointmentsForm", element: <CreateAppointment/>, errorElement: <ErrorPage/>}
 ];
 
 export default routes;

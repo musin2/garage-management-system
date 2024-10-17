@@ -62,6 +62,7 @@ function Appointments() {
                 <th>Vehicle</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Mechanic</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -74,6 +75,7 @@ function Appointments() {
                   </td>
                   <td>{appointment.service_date}</td>
                   <td>{appointment.status}</td>
+                  <td>{appointment.mechanic.name}</td>
                   <td>
                     <button
                       onClick={() =>
