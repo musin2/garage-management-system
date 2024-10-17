@@ -7,7 +7,6 @@ const [services, setServices] = useState([])
 console.log("Home setRole:", setRole);
 console.log("Home role:", role);
 
-
 // CHECK IF LOGGED IN => NAVIGATE TO LOG IN PAGE
 useEffect(() => {
   fetch('http://127.0.0.1:5555/services')

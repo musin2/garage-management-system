@@ -24,19 +24,28 @@ function CreateAppointment() {
     return (
         <>
         <NavBar/>
+        <div className="container-md m-4">
+            <h3 className="text-center">Make an Appointment</h3>
         <form className="form">
-
+            <div className="row m-2">
+                <div className="col m-1">
             <label htmlFor="service_date">Service Date</label>
             <input type="date" name="service_date" id="service_date" onChange={handleDateChange}/>
-
+            </div>
+            <div className="col m-1">
             <label htmlFor="select_mechanic">Mechaninc</label>
             <select id="select_mechanic" onChange={handleMechanicChange}>
                 <option value="">Select A mechanic</option>
             </select>
-
-
-            <button onClick={ handleSubmit}>Make Appointment</button>
+            </div>
+            </div>
+            <div className="row">
+                <div className="col text-center">
+            <button onClick={ handleSubmit} className="btn btn-info m-1">Make Appointment</button>
+            </div>
+            </div>
         </form>
+        </div>
         </>
     )
 }

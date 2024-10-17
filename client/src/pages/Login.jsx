@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = ({ setRole }) => {
     const navigate = useNavigate();
@@ -18,8 +19,13 @@ const Login = ({ setRole }) => {
         .post('http://127.0.0.1:5555/login', values, { withCredentials: true })
         .then(response => {
           console.log(response.data)
+          
           setRole(response.data.role);
           localStorage.setItem('userRole', response.data.role); 
+          Cookies.set('user_id', response.data.id,{expires: 7});
+          Cookies.set('user_name', response.data.name,{expires: 7});
+          Cookies.set('user_email', response.data.email,{expires: 7});
+          Cookies.set('user_phone', response.data.phone_number,{expires: 7});
           alert(response.data.message);
           navigate('/home'); 
         })
