@@ -95,7 +95,6 @@ class ServiceVehicle(db.Model,SerializerMixin):
     serialize_rules = ('-vehicle.services', '-service.vehicles')
 
 
-# Appointments Table (One-to-Many with Users and Vehicles)
 # Mechanic Table (One-to-Many with Appointments)
 class Mechanic(db.Model,SerializerMixin):
     __tablename__ = 'mechanics'
@@ -111,7 +110,7 @@ class Mechanic(db.Model,SerializerMixin):
     serialize_rules = ('-appointments.mechanic',)
 
 
-# Update to Appointment Table to include Mechanic relationship
+# Appointments Table (One-to-Many with Users and Vehicles)
 class Appointment(db.Model):
     __tablename__ = 'appointments'
     id = db.Column(db.Integer, primary_key=True)

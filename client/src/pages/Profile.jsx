@@ -3,7 +3,10 @@ import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
 function Profile() {
-const [appointments, setAppointments] = useState([])
+const [appointments, setAppointments] = useState([]);
+let uID = document.cookie;
+console.warn(uID);
+
 
 useEffect(() => {
     fetch('http://127.0.0.1:5555/appointments')
@@ -13,7 +16,12 @@ useEffect(() => {
         }
         return response.json()
     })
-    .then((data) => setAppointments(data))
+    .then((data) => {
+        const filt = data.filter((app) =>{
+             app.user_id == uID;
+        })
+        setAppointments(filt)
+    })
     .catch(error=>console.error(error));
     },[])
 
