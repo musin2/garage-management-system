@@ -22,7 +22,7 @@ useEffect(() => {
     <>
       <NavBar />
       <h1 className="text-center m-3">Home</h1>
-      <div className="container-lg p-2">
+      <div className="container-md p-2">
         <div className="row justify-content-between">
           <div className="col-3">
             <h4>Our Services</h4>
@@ -43,7 +43,8 @@ useEffect(() => {
           </thead>
           <tbody>{
             services.map((service) => {
-              return (<tr>
+              return (
+              <tr key={service.id}>
                 <td>{service.service_name}</td>
                 <td>{service.description}</td>
                 <td>{service.price}</td>

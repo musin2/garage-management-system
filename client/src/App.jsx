@@ -3,6 +3,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import NavBar from "./components/Navbar";
+import Home from "./pages/Home";
 
 const App = () => {
   const [role, setRole] = useState(null);
@@ -19,7 +20,7 @@ const App = () => {
       {role === "customer" && (
         <>
           <NavBar />
-          <h1>Home Page</h1>
+          <Home/>
           <Logout setRole={setRole} />
         </>
       )}
@@ -27,7 +28,7 @@ const App = () => {
       {role === "admin" && (
         <>
           <NavBar />
-          <h1>Home Page</h1>
+          <Home/>
           <Logout setRole={setRole} />
         </>
       )}
