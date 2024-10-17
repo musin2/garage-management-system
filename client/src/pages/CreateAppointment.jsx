@@ -7,7 +7,7 @@ function CreateAppointment() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        // set created at to 'NOW'
+        // set created at to 'NOW'     
         // set status to scheduled
         // set user_id to current user ID
         //set vehicle_id to current user's vehicle ID

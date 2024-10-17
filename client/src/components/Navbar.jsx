@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import Logout from "../pages/Logout";
+import Cookies from "js-cookie";
+import AdminNav from "./AdminNav";
 
 function NavBar({setRole, role, handleLogout}) {
     console.log("NavBar setRole:", setRole);
     console.log("NavBar role:", role);
+
+    const user_role= Cookies.get('user_role')
     return(
     <>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
@@ -34,11 +38,8 @@ function NavBar({setRole, role, handleLogout}) {
                   Home
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to={"/appointments"} className="nav-link active">
-                  Appointments
-                </Link>
-              </li>
+              {user_role == 'admin'? <AdminNav/> : null}
+              
               <li className="nav-item">
                 <Link to={"/profile"} className="nav-link active">
                   Profile
@@ -47,11 +48,6 @@ function NavBar({setRole, role, handleLogout}) {
               <li className="nav-item">
                 <Link to={"/about"} className="nav-link active">
                   About
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to={"/services"} className="nav-link active">
-                  Services
                 </Link>
               </li>
               {/* <li className="nav-item">
