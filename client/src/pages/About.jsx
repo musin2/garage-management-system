@@ -60,7 +60,7 @@ const About = () => {
                                     <Card.Text>{service.description}</Card.Text>
                                     <Card.Footer className="bg-light border-top-0">
                                         <strong>Price: ${service.price}</strong>
-                                        <Button variant="info" className="float-end">Learn More</Button>
+                                        {/* <Button variant="info" className="float-end">Learn More</Button> */}
                                     </Card.Footer>
                                 </Card.Body>
                             </Card>

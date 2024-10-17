@@ -25,7 +25,7 @@ const App = () => {
     } else {
         setRole(null);
     }
-}, []);
+}, [role]);
 
 
   return (

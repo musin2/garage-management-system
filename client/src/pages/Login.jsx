@@ -17,10 +17,11 @@ const Login = ({ setRole }) => {
       axios
         .post('http://127.0.0.1:5555/login', values, { withCredentials: true })
         .then(response => {
-          setRole(response.data.role);  // Set the role after successful login
-          localStorage.setItem('userRole', response.data.role); // Store role in local storage
+          console.log(response.data)
+          setRole(response.data.role);
+          localStorage.setItem('userRole', response.data.role); 
           alert(response.data.message);
-          navigate('/home');  // Redirect to Home
+          navigate('/home'); 
         })
         .catch(error => {
           const errorMessage = error.response?.data?.error || 'Login failed';
