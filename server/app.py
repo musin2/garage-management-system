@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response, jsonify
-from models import db, User, Vehicle, Service, Appointment
+from models import db, User, Vehicle, Service, Appointment,Mechanic
 from datetime import datetime
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -224,9 +224,10 @@ def schedule_appointment():
     user_id = data.get('user_id')
     vehicle_id = data.get('vehicle_id')
     service_date_str = data.get('service_date')
+    mechanic_id = data.get('mechanic_id')
 
-    if not (user_id and vehicle_id and service_date_str):
-        return jsonify({"error": "Missing required data: 'user_id', 'vehicle_id', 'service_date'"}), 400
+    if not (user_id and vehicle_id and service_date_str and mechanic_id):
+        return jsonify({"error": "Missing required data: 'user_id', 'vehicle_id', 'service_date', and 'mechanic_id'"}), 400
 
     try:
         service_date = datetime.strptime(service_date_str, "%Y-%m-%d %H:%M:%S")
@@ -235,21 +236,34 @@ def schedule_appointment():
 
     status = 'scheduled'
 
-    # Check user and vehicle exist
+    # Check if user and vehicle exist
     user = User.query.get(user_id)
     if user is None:
         return jsonify({"error": f"User with ID {user_id} does not exist."}), 404
-        
+
     vehicle = Vehicle.query.get(vehicle_id)
     if vehicle is None:
         return jsonify({"error": f"Vehicle with ID {vehicle_id} does not exist."}), 404
 
-    new_appointment = Appointment(user=user, vehicle=vehicle, service_date=service_date, status=status)
+    mechanic = Mechanic.query.get(mechanic_id)
+    if mechanic is None:
+        return jsonify({"error": f"Mechanic with ID {mechanic_id} does not exist."}), 404
+
+    new_appointment = Appointment(
+        user=user,
+        vehicle=vehicle,
+        service_date=service_date,
+        status=status,
+        mechanic=mechanic
+    )
 
     try:
         db.session.add(new_appointment)
         db.session.commit()
-        return jsonify({'message': 'Appointment scheduled successfully!'}), 201
+        return jsonify({
+            'message': 'Appointment scheduled successfully!',
+            'appointment': new_appointment.to_dict()  # Return appointment details
+        }), 201
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Could not schedule appointment. Please try again later."}), 500
@@ -277,6 +291,39 @@ def update_appointment_status(appointment_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Could not update appointment status."}), 500
+    
+
+
+@app.route("/mechanics", methods=["GET"])
+def get_all_mechanics():
+    mechanics = Mechanic.query.all()
+    return jsonify([mechanic.to_dict() for mechanic in mechanics]), 200
+
+@app.route("/mechanics/<int:id>", methods=["GET"])
+def get_mechanic_by_id(id):
+    mechanic = Mechanic.query.get(id)
+    if mechanic is None:
+        return jsonify({"error": "Mechanic not found"}), 404
+    return jsonify(mechanic.to_dict()), 200
+
+@app.route("/mechanics", methods=["POST"])
+def create_mechanic():
+    data = request.json
+    if not data or 'name' not in data or 'phone_number' not in data:
+        return jsonify({"error": "Name and phone number are required"}), 400
+
+    new_mechanic = Mechanic(
+        name=data['name'],
+        phone_number=data['phone_number']
+    )
+    db.session.add(new_mechanic)
+    db.session.commit()
+
+    return jsonify(new_mechanic.to_dict()), 201
+
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
