@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
 
-function Home() {
+function Home({setRole, role , handleLogout}) {
 const [services, setServices] = useState([])
+console.log("Home setRole:", setRole);
+console.log("Home role:", role);
+
 
 // CHECK IF LOGGED IN => NAVIGATE TO LOG IN PAGE
 useEffect(() => {
@@ -20,7 +23,7 @@ useEffect(() => {
 },[])
   return (
     <>
-      <NavBar />
+      <NavBar setRole={setRole} role={role} handleLogout={handleLogout}/>
       <h1 className="text-center m-3">Home</h1>
       <div className="container-md p-2">
         <div className="row justify-content-between">

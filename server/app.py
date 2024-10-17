@@ -1,3 +1,5 @@
+from flask import Flask, request, make_response, jsonify, session
+from models import db, User, Vehicle, Service, Appointment
 from flask import Flask, request, make_response, jsonify
 from models import db, User, Vehicle, Service, Appointment,Mechanic
 from datetime import datetime
@@ -7,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import os
 import json
+from functools import wraps
 from flask_cors import CORS
 from flask import jsonify
 
@@ -15,17 +18,27 @@ DATABASE = os.environ.get(
     "DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 app.config['SECRET_KEY'] = 'secret_key'
 
 
+
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 migrate = Migrate(app, db)
 db.init_app(app)
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get('role') != 'admin':
+            return jsonify({"error": "Admin access required"}), 403
+        return f(*args, **kwargs)
+    return decorated_function
 
 # User loader for Flask-Login
 @login_manager.user_loader
@@ -51,8 +64,19 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-
-        return jsonify({"message": "User registered successfully!"}), 201
+        
+        session['user_id'] = new_user.id
+        session['role'] = new_user.role
+        session['name'] = new_user.name
+        session['phone_number'] = new_user.phone_number
+        session['email'] = new_user.email
+        
+        return jsonify({"message": "User registered successfully!", 
+                        "id": new_user.id,
+                        "name": new_user.name,
+                        "phone_number": new_user.phone_number,
+                        "role": new_user.role,
+                        "email": new_user.email}), 201
     
     except Exception as e:
         db.session.rollback()  # Rollback in case of error
@@ -65,21 +89,55 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
+    # Query user by email
     user = User.query.filter_by(email=email).first()
     
-    # if user and user.password == password:
+    # Check if user exists and password is correct
     if user and check_password_hash(user.password, password):
-        login_user(user)
-        return jsonify({"message": "Login successful"}), 200
+        session['user_id'] = user.id  # Store user ID in session
+        session['role'] = user.role  # Store user role in session
+        session['name'] = user.name
+        session['phone_number'] = user.phone_number 
+        session['email'] = user.email
+        
+        return jsonify({
+            "message": "Login successful", 
+            "id": user.id,
+            "name": user.name,
+            "phone_number": user.phone_number,
+            "role": user.role,
+            "email": user.email
+            
+            
+            
+        }), 200
+    
+    # If login failed
     return jsonify({"error": "Invalid credentials"}), 401
 
 
 @app.route('/logout', methods=['POST'])
-@login_required
 def logout():
-    logout_user()
+    session.pop('user_id', None)  # Clear the user_id from the session
+    session.pop('role', None)     # Clear the role from the session
     return jsonify({"message": "Logged out successfully!"}), 200
 
+@app.route('/get-role', methods=['GET'])
+def get_role():
+    # Check if the user is logged in via session (or token if you’re using that)
+    user_id = session.get('user_id')  # Assuming you store user ID in session on login
+
+    if not user_id:
+        return jsonify({'error': 'No user logged in'}), 401
+
+    # Query the user from the database
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    # Return the user's role
+    return jsonify({'role': user.role}), 200
 
 @app.route('/')
 def index():
@@ -158,7 +216,9 @@ def get_services():
     return make_response(json.dumps(service_data), 200)
 
 # Garage Owner: Manage Services
+
 @app.route('/services', methods=['POST'])
+@admin_required
 def add_service():
     data = request.get_json()
     new_service = Service(
@@ -176,6 +236,7 @@ def add_service():
 
 
 @app.route('/services/<int:service_id>', methods=['PATCH'])
+@admin_required
 def update_service(service_id):
     service = Service.query.get_or_404(service_id)
     data = request.get_json()
@@ -193,6 +254,7 @@ def update_service(service_id):
 
 
 @app.route('/services/<int:service_id>', methods=['DELETE'])
+@admin_required
 def delete_service(service_id):
     service = Service.query.get_or_404(service_id)
     db.session.delete(service)
@@ -269,6 +331,7 @@ def schedule_appointment():
         return jsonify({"error": "Could not schedule appointment. Please try again later."}), 500
 
 @app.route('/appointments/<int:appointment_id>', methods=['PATCH'])
+@admin_required
 def update_appointment_status(appointment_id):
     # Fetch the appointment by ID
     appointment = Appointment.query.get_or_404(appointment_id)

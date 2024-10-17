@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import "../App.css";
 import Logout from "../pages/Logout";
 
-function NavBar() {
-  return (
+function NavBar({setRole, role, handleLogout}) {
+    console.log("NavBar setRole:", setRole);
+    console.log("NavBar role:", role);
+    return(
     <>
       <nav className="navbar navbar-expand-md navbar-light bg-light">
         <div className="container-sm">
@@ -56,16 +57,13 @@ function NavBar() {
               {/* <li className="nav-item">
                     <a className="nav-link" href="#">Link</a>
                     </li> */}
-            </ul>
-              {/* <button className="btn btn-outline-info" type="submit">
-                Logout
-              </button> */}
-              <Logout/>
-          </div>
-        </div>
-      </nav>
-    </>
-  );
+                </ul>
+                <Logout setRole={setRole} role={role} handleLogout={handleLogout}/>
+                </div>
+            </div>
+        </nav>
+        </>
+    )
 }
 
 export default NavBar;
