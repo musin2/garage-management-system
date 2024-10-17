@@ -96,6 +96,22 @@ class ServiceVehicle(db.Model,SerializerMixin):
 
 
 # Appointments Table (One-to-Many with Users and Vehicles)
+# Mechanic Table (One-to-Many with Appointments)
+class Mechanic(db.Model,SerializerMixin):
+    __tablename__ = 'mechanics'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    phone_number = db.Column(db.String(20), nullable=False)
+    
+
+    # Relationships
+    appointments = db.relationship('Appointment', back_populates='mechanic', lazy=True)
+
+    # Optional serialization rules
+    serialize_rules = ('-appointments.mechanic',)
+
+
+# Update to Appointment Table to include Mechanic relationship
 class Appointment(db.Model):
     __tablename__ = 'appointments'
     id = db.Column(db.Integer, primary_key=True)
@@ -106,25 +122,31 @@ class Appointment(db.Model):
     # Foreign Keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.id'), nullable=False)
+    mechanic_id = db.Column(db.Integer, db.ForeignKey('mechanics.id'), nullable=True)  # Nullable if no mechanic is assigned yet
 
     # Relationships
     user = db.relationship('User', back_populates='appointments')
     vehicle = db.relationship('Vehicle', back_populates='appointments')
+    mechanic = db.relationship('Mechanic', back_populates='appointments')
 
     # Custom method to serialize the Appointment model
     def to_dict(self):
-     return {
-        'id': self.id,
-        'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
-        'status': self.status,
-        'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
-        'user': {
-            'id': self.user.id,
-            'name': self.user.name
-        },
-        'vehicle': {
-            'id': self.vehicle.id,
-            'make': self.vehicle.make,
-            'license_plate': self.vehicle.license_plate
+        return {
+            'id': self.id,
+            'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+            'status': self.status,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+            'user': {
+                'id': self.user.id,
+                'name': self.user.name
+            },
+            'vehicle': {
+                'id': self.vehicle.id,
+                'make': self.vehicle.make,
+                'license_plate': self.vehicle.license_plate
+            },
+            'mechanic': {
+                'id': self.mechanic.id,
+                'name': self.mechanic.name
+            } if self.mechanic else None  # If no mechanic assigned, return None
         }
-    }
