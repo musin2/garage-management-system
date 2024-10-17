@@ -34,30 +34,40 @@ const Login = ({setRole}) => {
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2 className='text-center'>Login</h2>
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, status }) => (
-          <Form>
+          <div className="container-md">
+          <Form className='form'>
             {status?.error && <div className="error">{status.error}</div>}
 
-            <div>
+            <div className='row m-2'>
+              <div className="col-2">
               <label htmlFor="email">Email</label>
-              <Field type="email" name="email" />
+              </div>
+              <div className="col-7">
+              <Field type="email" name="email" className='form-control' placeholder='Enter Email Address'/>
+              </div>
               <ErrorMessage name="email" component="div" />
             </div>
 
-            <div>
-              <label htmlFor="password">Password</label>
-              <Field type="password" name="password" />
+            <div className='row m-2'>
+              <div className="col-2">
+              <label htmlFor="password" >Password</label>
+              </div>
+              <div className="col-7">
+              <Field type="password" name="password" placeholder='Enter Password' className='form-control'/>
+              </div>
               <ErrorMessage name="password" component="div" />
             </div>
 
-            <button type="submit" disabled={isSubmitting}>Login</button>
+            <button type="submit" disabled={isSubmitting} className='btn-lg btn-info m-2 text-center'>Login</button>
           </Form>
+          </div>
         )}
       </Formik>
     </div>

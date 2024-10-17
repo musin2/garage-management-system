@@ -36,53 +36,72 @@ const Register = ({setRole}) => {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2 className='text-center'>Register</h2>
       <Formik
         initialValues={{ name: '', email: '', phone_number: '', password: '', role: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, status }) => (
-          <Form>
+          <div className="container-md">
+          <Form className='form'>
             {status?.error && <div className="error">{status.error}</div>}
             {status?.success && <div className="success">Registration successful!</div>}
 
-            <div>
-              <label htmlFor="name">name</label>
-              <Field type="text" name="name" />
+            <div className='row m-1'>
+              <div className="col-2">
+              <label htmlFor="name">Name</label>
+              </div>
+              <div className="col-4">
+              <Field type="text" name="name" className='form-control' placeholder='Enter Your Name'/>
+              </div>
               <ErrorMessage name="name" component="div" />
-            </div>
+            
 
-            <div>
+            <div className='col-2'>
               <label htmlFor="email">Email</label>
-              <Field type="email" name="email" />
+              </div>
+              <div className="col-4">
+              <Field type="email" name="email" className='form-control' placeholder='name@provider.com'/>
+              </div>
               <ErrorMessage name="email" component="div" />
-            </div>
+              </div>
 
-            <div>
+            <div className='row m-1'>
+            <div className='col-2'>
               <label htmlFor="phone_number">Phone Number</label>
-              <Field type="text" name="phone_number" />
+              </div>
+              <div className="col-4">
+              <Field type="text" name="phone_number"  className='form-control' placeholder='Enter Your Mobile Number'/>
+              </div>
               <ErrorMessage name="phone_number" component="div" />
-            </div>
 
-            <div>
+            <div className='col-2'>
               <label htmlFor="password">Password</label>
-              <Field type="password" name="password" />
+              </div>
+              <div className="col-4">
+              <Field type="password" name="password"  className='form-control' placeholder='Enter Your Password'/>
+              </div>
               <ErrorMessage name="password" component="div" />
             </div>
 
-            <div>
+            <div className='row m-1'>
+              <div className="col-2">
               <label htmlFor="role">Role (customer/admin)</label>
-              <Field as="select" name="role">
+              </div>
+              <div className='col-3'>
+              <Field as="select" name="role" className='form-control form-select'>
                 <option value="">Select role</option>
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
               </Field>
               <ErrorMessage name="role" component="div" />
+              </div>
             </div>
 
-            <button type="submit" disabled={isSubmitting}>Register</button>
+            <button type="submit" disabled={isSubmitting} className='btn-lg btn-info'>Register</button>
           </Form>
+          </div>
         )}
       </Formik>
     </div>

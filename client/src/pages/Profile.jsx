@@ -21,7 +21,7 @@ useEffect(() => {
     <>
     <NavBar/>
 
-    <div className="container mt-5">
+    <div className="container-md mt-5">
         <div className="row m-3">
             <div className="col-4">
                 <div className="row">
@@ -53,9 +53,8 @@ useEffect(() => {
                             </tr>
                         </thead>
                         <tbody>
-                            {console.log(appointments)}
                             {appointments.map((app)=> {
-                                return(<tr>
+                                return(<tr key={app.id}>
                                         <td>{app.id}</td>
                                         <td>{app.service_date}</td>
                                         <td>{app.status}</td>

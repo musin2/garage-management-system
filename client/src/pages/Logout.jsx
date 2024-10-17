@@ -17,7 +17,7 @@ const Logout = ({ setRole }) => {
       });
   };
 
-  return <button onClick={handleLogout}>Logout</button>;
+  return <button className="btn btn-outline-info" onClick={handleLogout}>Logout</button>
 };
 
 export default Logout;
