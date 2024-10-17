@@ -45,89 +45,122 @@ const Register = ({ setRole }) => {
   };
 
   return (
-    <div>
-      <h2 className='text-center'>Register</h2>
-      <Formik
-        initialValues={{
-          name: "",
-          email: "",
-          phone_number: "",
-          password: "",
-          role: "",
-        }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, status }) => (
-          <div className="container-md">
-          <Form className='form'>
-            {status?.error && <div className="error">{status.error}</div>}
-            {status?.success && <div className="success">Registration successful!</div>}
+    <div className="container-md d-flex justify-content-center">
+      <div className="col-md-8">
+        <h2 className="text-center mb-4">Register</h2>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            phone_number: "",
+            password: "",
+            role: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, status }) => (
+            <Form className="form">
+              {status?.error && <div className="alert alert-danger">{status.error}</div>}
+              {status?.success && (
+                <div className="alert alert-success">Registration successful!</div>
+              )}
 
-            <div className='row m-1'>
-              <div className="col-2">
-              <label htmlFor="name">Name</label>
-              </div>
-              <div className="col-4">
-              <Field type="text" name="name" className='form-control' placeholder='Enter Your Name'/>
-              </div>
-              <ErrorMessage name="name" component="div" />
-            
-
-            <div className='col-2'>
-              <label htmlFor="email">Email</label>
-              </div>
-              <div className="col-4">
-              <Field type="email" name="email" className='form-control' placeholder='name@provider.com'/>
-              </div>
-              <ErrorMessage name="email" component="div" />
+              <div className="row mb-3">
+                <div className="col-md-2">
+                  <label htmlFor="name">Name</label>
+                </div>
+                <div className="col-md-10">
+                  <Field
+                    type="text"
+                    name="name"
+                    className="form-control"
+                    placeholder="Enter Your Name"
+                  />
+                  <ErrorMessage name="name" component="div" className="text-danger" />
+                </div>
               </div>
 
-            <div className='row m-1'>
-            <div className='col-2'>
-              <label htmlFor="phone_number">Phone Number</label>
+              <div className="row mb-3">
+                <div className="col-md-2">
+                  <label htmlFor="email">Email</label>
+                </div>
+                <div className="col-md-10">
+                  <Field
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    placeholder="name@provider.com"
+                  />
+                  <ErrorMessage name="email" component="div" className="text-danger" />
+                </div>
               </div>
-              <div className="col-4">
-              <Field type="text" name="phone_number"  className='form-control' placeholder='Enter Your Mobile Number'/>
-              </div>
-              <ErrorMessage name="phone_number" component="div" />
 
-            <div className='col-2'>
-              <label htmlFor="password">Password</label>
+              <div className="row mb-3">
+                <div className="col-md-2">
+                  <label htmlFor="phone_number">Phone Number</label>
+                </div>
+                <div className="col-md-10">
+                  <Field
+                    type="text"
+                    name="phone_number"
+                    className="form-control"
+                    placeholder="Enter Your Mobile Number"
+                  />
+                  <ErrorMessage name="phone_number" component="div" className="text-danger" />
+                </div>
               </div>
-              <div className="col-4">
-              <Field type="password" name="password"  className='form-control' placeholder='Enter Your Password '/>
-              </div>
-              <ErrorMessage name="password" component="div" />
-            </div>
 
-            <div className='row m-1'>
-              <div className="col-2">
-              <label htmlFor="role">Role (customer/admin)</label>
+              <div className="row mb-3">
+                <div className="col-md-2">
+                  <label htmlFor="password">Password</label>
+                </div>
+                <div className="col-md-10">
+                  <Field
+                    type="password"
+                    name="password"
+                    className="form-control"
+                    placeholder="Enter Your Password"
+                  />
+                  <ErrorMessage name="password" component="div" className="text-danger" />
+                </div>
               </div>
-              <div className='col-3'>
-              <Field as="select" name="role" className='form-control form-select'>
-                <option value="">Select role</option>
-                <option value="customer">Customer</option>
-                <option value="admin">Admin</option>
-              </Field>
-              <ErrorMessage name="role" component="div" />
+
+              <div className="row mb-3">
+                <div className="col-md-2">
+                  <label htmlFor="role">Role</label>
+                </div>
+                <div className="col-md-4">
+                  <Field as="select" name="role" className="form-control form-select">
+                    <option value="">Select role</option>
+                    <option value="customer">Customer</option>
+                    <option value="admin">Admin</option>
+                  </Field>
+                  <ErrorMessage name="role" component="div" className="text-danger" />
+                </div>
               </div>
-            </div>
-            <button type="submit" disabled={isSubmitting}>
-              Register
-            </button>
-          </Form>
-          </div>
-        )}
-      </Formik>
-      <div>
-        <p>
-          Already have an account? Click to sign in.
-        </p>
+
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  Register
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+        <div className="text-center mt-3">
+          <p>
+            Already have an account? <span>Sign in</span>.
+          </p>
+        </div>
       </div>
     </div>
   );
+
 };
 
 export default Register;

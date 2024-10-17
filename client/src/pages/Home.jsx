@@ -1,39 +1,53 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
-function Home({setRole, role , handleLogout}) {
-const [services, setServices] = useState([])
-console.log("Home setRole:", setRole);
-console.log("Home role:", role);
 
-// CHECK IF LOGGED IN => NAVIGATE TO LOG IN PAGE
-useEffect(() => {
-  fetch('http://127.0.0.1:5555/services')
-  .then((response) => {
-    if (!response.ok){
-      throw new Error(`Could not retreive Services data!: ${response.status}`);
-    }
-    return response.json()
-    })
-  .then((data) => setServices(data))
-  .catch(error => console.error(error)
-  );
-},[])
+function Home({ setRole, role, handleLogout }) {
+  const [services, setServices] = useState([]);
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const roleFromCookies = Cookies.get("user_role");
+    setUserRole(roleFromCookies);
+  }, []);
+
+  // CHECK IF LOGGED IN => NAVIGATE TO LOG IN PAGE
+  useEffect(() => {
+    fetch("http://127.0.0.1:5555/services")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `Could not retreive Services data!: ${response.status}`
+          );
+        }
+        return response.json();
+      })
+      .then((data) => setServices(data))
+      .catch((error) => console.error(error));
+  }, []);
   return (
     <>
-      <NavBar setRole={setRole} role={role} handleLogout={handleLogout}/>
+      <NavBar
+        setRole={setRole}
+        role={role}
+        handleLogout={handleLogout}
+        userRole={userRole}
+      />
       <h1 className="text-center m-3">Home</h1>
       <div className="container-md p-2">
         <div className="row justify-content-between">
           <div className="col-3">
             <h4>Our Services</h4>
           </div>
-          <div className="col-3">
-            <Link to="/appointmentsForm">
-              <button className="btn bg-info m-2">Book an Appointment</button>
-            </Link>
-          </div>
+          {userRole === "customer" && (
+            <div className="col-3">
+              <Link to="/appointmentsForm">
+                <button className="btn bg-info m-2">Book an Appointment</button>
+              </Link>
+            </div>
+          )}
         </div>
         <table className="table ">
           <thead>
@@ -43,16 +57,17 @@ useEffect(() => {
               <th>Price</th>
             </tr>
           </thead>
-          <tbody>{
-            services.map((service) => {
+          <tbody>
+            {services.map((service) => {
               return (
-              <tr key={service.id}>
-                <td>{service.service_name}</td>
-                <td>{service.description}</td>
-                <td>{service.price}</td>
-              </tr>)
-            })
-            }</tbody>
+                <tr key={service.id}>
+                  <td>{service.service_name}</td>
+                  <td>{service.description}</td>
+                  <td>{service.price}</td>
+                </tr>
+              );
+            })}
+          </tbody>
         </table>
       </div>
     </>

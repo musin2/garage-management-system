@@ -5,12 +5,12 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Logout from "./pages/Logout";
 
-
 const App = () => {
-  const [role, setRole] = useState(() => localStorage.getItem("userRole") || null); // Retrieve role from local storage
+  const [role, setRole] = useState(
+    () => localStorage.getItem("userRole") || null
+  ); // Retrieve role from local storage
   const [showLogin, setShowLogin] = useState(true); // Toggle between Login and Register
   // const [role, setRole] = useState(localStorage.getItem('userRole') || null);
-
 
   const handleLogout = () => {
     setRole(null); // Clear the user role
@@ -21,30 +21,33 @@ const App = () => {
     // Check the role when the component mounts or updates
     const storedRole = localStorage.getItem("userRole");
     if (storedRole) {
-        setRole(storedRole);
+      setRole(storedRole);
     } else {
-        setRole(null);
+      setRole(null);
     }
-}, [role]);
-
+  }, [role]);
 
   return (
     <div>
       {!role ? (
         <>
           {showLogin ? (
-            <Login setRole={setRole} />
-          ) : (
             <Register setRole={setRole} />
+          ) : (
+            <Login setRole={setRole} />
           )}
-          <button onClick={() => setShowLogin(!showLogin)}>
-            {showLogin ? "Sign in" : "Sign up"}
-          </button>
+          <div className="d-flex justify-content-center mt-10">
+            <button
+              onClick={() => setShowLogin(!showLogin)}
+              className="btn btn-primary mb-2"
+            >
+              {showLogin ? "Sign in" : "Sign up"}
+            </button>
+          </div>
         </>
       ) : (
         <>
-          <Home setRole={setRole} role={role} handleLogout={handleLogout}/>
-          {/* <Logout setRole={setRole} handleLogout={handleLogout} /> */}
+          <Home setRole={setRole} role={role} handleLogout={handleLogout} />
         </>
       )}
     </div>

@@ -1,8 +1,9 @@
 from flask import Flask, request, make_response, jsonify, session
+from flask_session import Session
 from models import db, User, Vehicle, Service, Appointment
 from flask import Flask, request, make_response, jsonify
 from models import db, User, Vehicle, Service, Appointment,Mechanic
-from datetime import datetime
+from datetime import datetime,timedelta
 from flask_migrate import Migrate
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +24,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 app.config['SECRET_KEY'] = 'secret_key'
+# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+# session.permanent = True
+app.config['SESSION_TYPE'] = 'filesystem'  # Store sessions in files
+app.config['SECRET_KEY'] = 'your_secret_key'
+
+Session(app) 
 
 
 
@@ -35,7 +42,11 @@ db.init_app(app)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get('role') != 'admin':
+        print("Checking admin access...")  # Debugging: Check if this is called
+        role = request.cookies.get('user_role')  # Get role from cookies
+        print("Current Role in Cookies:", role)
+        
+        if role != 'admin':
             return jsonify({"error": "Admin access required"}), 403
         return f(*args, **kwargs)
     return decorated_function
@@ -71,6 +82,7 @@ def register():
         session['phone_number'] = new_user.phone_number
         session['email'] = new_user.email
         
+        
         return jsonify({"message": "User registered successfully!", 
                         "id": new_user.id,
                         "name": new_user.name,
@@ -89,38 +101,40 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    # Query user by email
     user = User.query.filter_by(email=email).first()
     
-    # Check if user exists and password is correct
     if user and check_password_hash(user.password, password):
-        session['user_id'] = user.id  # Store user ID in session
-        session['role'] = user.role  # Store user role in session
+        # Store user info in session (optional)
+        session['user_id'] = user.id
         session['name'] = user.name
-        session['phone_number'] = user.phone_number 
-        session['email'] = user.email
         
-        return jsonify({
+        # Create a response object to set cookies
+        response = make_response(jsonify({
             "message": "Login successful", 
             "id": user.id,
             "name": user.name,
             "phone_number": user.phone_number,
             "role": user.role,
             "email": user.email
-            
-            
-            
-        }), 200
+        }), 200)
+        
+        # Set the role in a cookie (ensure no httponly for localhost testing)
+        response.set_cookie('user_role', user.role)  # Consider expiration if needed
+        
+        return response
     
-    # If login failed
     return jsonify({"error": "Invalid credentials"}), 401
+
 
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)  # Clear the user_id from the session
-    session.pop('role', None)     # Clear the role from the session
-    return jsonify({"message": "Logged out successfully!"}), 200
+    session.clear()  # Clear the entire session
+
+    response = make_response(jsonify({"message": "Logged out successfully!"}), 200)
+    response.set_cookie('session', '', expires=0)  # Clear session cookie
+    
+    return response
 
 @app.route('/get-role', methods=['GET'])
 def get_role():
@@ -256,6 +270,7 @@ def update_service(service_id):
 @app.route('/services/<int:service_id>', methods=['DELETE'])
 @admin_required
 def delete_service(service_id):
+    print("Current Session on DELETE request:", session)
     service = Service.query.get_or_404(service_id)
     db.session.delete(service)
     db.session.commit()
