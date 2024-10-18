@@ -218,7 +218,7 @@ def add_vehicle(user_id):
         make=data['make'], 
         model=data['model'], 
         year=data['year'], 
-        license_plate=data['license_plate'],
+        license_plate=data['vehicle_plate'],
         owner=user
     )
     db.session.add(new_vehicle)
@@ -230,11 +230,11 @@ def add_vehicle(user_id):
     }
     return make_response(json.dumps(response_body), 201)
 
-@app.route('/users/<int:user_id>/vehicles/<int:vehicle_id>', methods=['PATCH'])
-def update_vehicle(user_id, vehicle_id):
+@app.route('/users/<int:user_id>/vehicles/<int:license_plate>', methods=['PATCH'])
+def update_vehicle(user_id, license_plate):
     data = request.get_json()
     user = User.query.get_or_404(user_id)
-    vehicle = Vehicle.query.get_or_404(vehicle_id)
+    vehicle = Vehicle.query.get_or_404(license_plate)
 
     # Check if the vehicle belongs to the user
     if vehicle.owner != user:
@@ -269,7 +269,7 @@ def update_vehicle(user_id, vehicle_id):
 def get_user_vehicles(user_id):
     user = User.query.get_or_404(user_id)
     vehicles = Vehicle.query.filter_by(user_id=user.id).all()
-    vehicle_data = [{'id': v.id, 'make': v.make, 'model': v.model, 'year': v.year} for v in vehicles]
+    vehicle_data = [{'id': v.id, 'make': v.make, 'model': v.model, 'year': v.year, "license_plate": v.license_plate} for v in vehicles]
 
     return make_response(json.dumps(vehicle_data), 200)
 
@@ -352,12 +352,12 @@ def schedule_appointment():
     data = request.get_json()
 
     user_id = data.get('user_id')
-    vehicle_id = data.get('vehicle_id')
+    license_plate = data.get('vehicle_plate')
     service_date_str = data.get('service_date')
     mechanic_id = data.get('mechanic_id')
 
-    if not (user_id and vehicle_id and service_date_str and mechanic_id):
-        return jsonify({"error": "Missing required data: 'user_id', 'vehicle_id', 'service_date', and 'mechanic_id'"}), 400
+    if not (user_id and license_plate and service_date_str and mechanic_id):
+        return jsonify({"error": "Missing required data: 'user_id', 'license_plate', 'service_date', and 'mechanic_id'"}), 400
 
     try:
         service_date = datetime.strptime(service_date_str, "%Y-%m-%d %H:%M:%S")
@@ -371,9 +371,9 @@ def schedule_appointment():
     if user is None:
         return jsonify({"error": f"User with ID {user_id} does not exist."}), 404
 
-    vehicle = Vehicle.query.get(vehicle_id)
+    vehicle = Vehicle.query.filter_by(license_plate=license_plate).first()
     if vehicle is None:
-        return jsonify({"error": f"Vehicle with ID {vehicle_id} does not exist."}), 404
+        return jsonify({"error": f"Vehicle with License Plate {license_plate} does not exist."}), 404
 
     mechanic = Mechanic.query.get(mechanic_id)
     if mechanic is None:

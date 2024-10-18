@@ -29,9 +29,9 @@ function NavBar({ setRole, role, handleLogout}) {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon">Nav</span>
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse offset-3" id="mainNavBar">
+          <div className="collapse navbar-collapse offset-1" id="mainNavBar">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               {userRole === "customer" && (
                 <>
@@ -80,6 +80,14 @@ function NavBar({ setRole, role, handleLogout}) {
                       className="nav-link active"
                     >
                       Manage Appointments
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      to={"/manage-mechanics"}
+                      className="nav-link active"
+                    >
+                      Manage Mechanics
                     </Link>
                   </li>
                   <li className="nav-item">
