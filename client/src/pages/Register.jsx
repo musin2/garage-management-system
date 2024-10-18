@@ -151,7 +151,7 @@ const Register = ({ setRole }) => {
               <div className="d-flex justify-content-center">
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-info"
                   disabled={isSubmitting}
                 >
                   Register

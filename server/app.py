@@ -38,10 +38,8 @@ db.init_app(app)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        print("Checking admin access...")
-        role = session.get('role')  # Get user role from the session
-        print("Current Role in Session:", role)
-        if role != 'admin':
+        if session.get('role') != 'admin':
+            print(session)
             return jsonify({"error": "Admin access required"}), 403
         return f(*args, **kwargs)
     return decorated_function
@@ -169,6 +167,44 @@ def get_role():
     # Return the user's role
     return jsonify({'role': user.role}), 200
 
+# @app.route("/users")
+# def get_users():
+#     users=User.query.all()
+#     return users
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    users_dict=[user.to_dict() for user in users]
+    # service_data = [{'id': s.id, 'service_name': s.service_name, 'description': s.description, 'price': str(s.price)} for s in services]
+    
+    return make_response(users_dict, 200)
+
+
+@app.route('/users/<int:user_id>', methods=['PATCH'])
+def update_user(user_id):
+    # Fetch the user by id
+    user = User.query.get_or_404(user_id)
+
+    # Get the updated data from the request
+    data = request.get_json()
+
+    # Update the user's details
+    if 'name' in data:
+        user.name = data['name']
+    if 'email' in data:
+        user.email = data['email']
+    if 'phone_number' in data:
+        user.phone_number = data['phone_number']
+
+    # Commit the changes to the database
+    try:
+        db.session.commit()
+        return jsonify({"message": "User updated successfully", "user": user.to_dict()}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
 @app.route('/')
 def index():
     return make_response('<h1>Garage routes</h1>', 200)
@@ -189,7 +225,8 @@ def add_vehicle(user_id):
     db.session.commit()
 
     response_body = {
-        'message': 'Vehicle added successfully!'
+        'message': 'Vehicle added successfully!',
+        'id': new_vehicle.id  # Return the newly created vehicle's ID
     }
     return make_response(json.dumps(response_body), 201)
 
@@ -248,7 +285,7 @@ def get_services():
 # Garage Owner: Manage Services
 
 @app.route('/services', methods=['POST'])
-@admin_required
+# @admin_required
 def add_service():
     data = request.get_json()
     new_service = Service(
@@ -266,7 +303,7 @@ def add_service():
 
 
 @app.route('/services/<int:service_id>', methods=['PATCH'])
-@admin_required
+# @admin_required
 def update_service(service_id):
     service = Service.query.get_or_404(service_id)
     data = request.get_json()
@@ -284,7 +321,7 @@ def update_service(service_id):
 
 
 @app.route('/services/<int:service_id>', methods=['DELETE'])
-@admin_required
+# @admin_required
 def delete_service(service_id):
     print("Current Session on DELETE request:", session)
     service = Service.query.get_or_404(service_id)
@@ -362,7 +399,7 @@ def schedule_appointment():
         return jsonify({"error": "Could not schedule appointment. Please try again later."}), 500
 
 @app.route('/appointments/<int:appointment_id>', methods=['PATCH'])
-@admin_required
+# @admin_required
 def update_appointment_status(appointment_id):
     # Fetch the appointment by ID
     appointment = Appointment.query.get_or_404(appointment_id)

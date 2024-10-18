@@ -32,16 +32,17 @@ const App = () => {
       {!role ? (
         <>
           {showLogin ? (
-            <Register setRole={setRole} />
-          ) : (
+            
             <Login setRole={setRole} />
+          ) : (
+            <Register setRole={setRole} />
           )}
           <div className="d-flex justify-content-center mt-10">
             <button
               onClick={() => setShowLogin(!showLogin)}
-              className="btn btn-primary mb-2"
+              className="btn btn-info mb-2"
             >
-              {showLogin ? "Sign in" : "Sign up"}
+              {showLogin ? "Sign up" : "Sign in"}
             </button>
           </div>
         </>

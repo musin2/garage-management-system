@@ -40,7 +40,7 @@ const Login = ({ setRole }) => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100">
+    <div className="d-flex justify-content-center align-items-center ">
       <div className="col-md-4">
         <h2 className="text-center">Login</h2>
         <Formik
@@ -80,7 +80,7 @@ const Login = ({ setRole }) => {
               <div className="d-flex justify-content-center">
                 <button 
                   type="submit" 
-                  className="btn btn-primary mb-2" 
+                  className="btn btn-info mb-2" 
                   disabled={isSubmitting}
                 >
                   Login
