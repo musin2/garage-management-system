@@ -1,0 +1,54 @@
+/* register.css */
+body {
+  font-family: 'Chakra Petch', sans-serif; /* Ensure the font is applied */
+  background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+h1, h2, p {
+  font-family: 'Chakra Petch', sans-serif; /* Apply font to headings and paragraphs */
+  color: #343a40; /* Dark gray for better readability */
+}
+
+.container-md {
+  margin-top: 5%; /* Center the form vertically */
+}
+
+.btn-info {
+  background-color: #17a2b8; /* Bootstrap's info color */
+  border: none; /* Remove default border */
+  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
+}
+
+.btn-info:hover {
+  background-color: #138496; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+.alert {
+  margin-bottom: 1rem;
+  font-weight: bold; /* Bold text for alerts */
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.custom-bg {
+  background-color: transparent !important; /* Override Bootstrap's background */
+}
+
+.form-control {
+  border: 1px solid #ced4da; /* Light gray border */
+  border-radius: 0.25rem; /* Slightly rounded corners */
+  transition: border-color 0.3s; /* Smooth transition */
+}
+
+.form-control:focus {
+  border-color: #80bdff; /* Bootstrap's primary focus color */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Bootstrap's primary focus shadow */
+}
+
+.text-center {
+  margin-top: 15px; /* Add margin for better spacing */
+  font-size: 1.2rem; /* Slightly larger font size */
+}

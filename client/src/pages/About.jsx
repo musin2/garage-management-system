@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../components/Navbar';
-import "../App.css"
+import "../css/about.css"; // Update the path to the correct location
+
 
 const About = () => {
     const [services, setServices] = useState([]);

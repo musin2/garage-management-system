@@ -1,0 +1,75 @@
+/* home.css */
+
+/* General styles */
+body {
+    background-color: #f8f9fa; /* Light gray background */
+    font-family: 'Chakra Petch', sans-serif; /* Your chosen Google Font */
+    background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+/* Heading styles */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #343a40; /* Dark gray color */
+    text-align: center; /* Center the main heading */
+    margin-bottom: 20px; /* Spacing below the heading */
+}
+
+h4 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #343a40; /* Dark gray for better contrast */
+    margin-bottom: 15px; /* Spacing below the subheading */
+}
+
+/* Button styles */
+.btn {
+    border-radius: 0.25rem; /* Rounded corners */
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+}
+
+.btn:hover {
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Table styles */
+.table {
+    background-color: #ffffff; /* White background for the table */
+    border-radius: 0.5rem; /* Rounded corners */
+    overflow: hidden; /* Ensures the border radius works */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-top: 20px; /* Spacing above the table */
+}
+
+.table th {
+    background-color: #17a2b8; /* Bootstrap info color */
+    color: white; /* White text color for header */
+    font-weight: bold;
+}
+
+.table td {
+    padding: 1rem; /* More padding for table cells */
+}
+
+.table tr:hover {
+    background-color: #e0f7fa; /* Light blue background on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.9rem; /* Smaller text for mobile */
+    }
+
+    h1 {
+        font-size: 2rem; /* Smaller heading for mobile */
+    }
+
+    h4 {
+        font-size: 1.25rem; /* Smaller subheading for mobile */
+    }
+}
+

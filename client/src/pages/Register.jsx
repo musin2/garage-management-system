@@ -1,15 +1,14 @@
 import React from "react";
+import "../css/register.css"; // Update the path to the correct location
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-
 const Register = ({ setRole }) => {
   const navigate = useNavigate();
 
-  // Validation schema using Yup
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -33,7 +32,7 @@ const Register = ({ setRole }) => {
         alert(response.data.message);
         setStatus({ success: true });
         setRole(response.data.role);
-        localStorage.setItem('userRole', response.data.role); // Store role in local storage
+        localStorage.setItem('userRole', response.data.role);
         Cookies.set("user_id", response.data.id, { expires: 7 });
         Cookies.set("user_name", response.data.name, { expires: 7 });
         Cookies.set("user_email", response.data.email, { expires: 7 });
@@ -42,7 +41,7 @@ const Register = ({ setRole }) => {
         navigate("/home");
       })
       .catch((error) => {
-        const errorMessage = error.response?.data?.error || "Registration failed"; // Updated error handling
+        const errorMessage = error.response?.data?.error || "Registration failed";
         setStatus({
           error: errorMessage,
         });
@@ -50,12 +49,13 @@ const Register = ({ setRole }) => {
       .finally(() => {
         setSubmitting(false);
       });
-};
+  };
 
   return (
-    <div className="container-md d-flex justify-content-center">
-      <div className="col-md-8">
-        <h2 className="text-center mb-4">Register</h2>
+    <div className="container d-flex justify-content-center align-items-center min-vh-90">
+      <div className="col-md-6 shadow p-4 rounded bg-light">
+        <h1 className="text-center mb-6 text-info">WELCOME TO GARAGE 66</h1>
+        <h2 className="text-center mb-4 text-info">Register</h2>
         <Formik
           initialValues={{
             name: "",
@@ -74,78 +74,28 @@ const Register = ({ setRole }) => {
                 <div className="alert alert-success">Registration successful!</div>
               )}
 
-              <div className="row mb-3">
-                <div className="col-md-2">
-                  <label htmlFor="name">Name</label>
-                </div>
-                <div className="col-md-10">
+              {/* Repeated fields styled uniformly */}
+              {["name", "email", "phone_number", "password"].map((field, index) => (
+                <div className="mb-3" key={index}>
+                  <label htmlFor={field} className="form-label">{field.replace('_', ' ').toUpperCase()}</label>
                   <Field
-                    type="text"
-                    name="name"
+                    type={field === "password" ? "password" : "text"}
+                    name={field}
                     className="form-control"
-                    placeholder="Enter Your Name"
+                    placeholder={`Enter Your ${field.replace('_', ' ')}`}
                   />
-                  <ErrorMessage name="name" component="div" className="text-danger" />
+                  <ErrorMessage name={field} component="div" className="text-danger" />
                 </div>
-              </div>
+              ))}
 
-              <div className="row mb-3">
-                <div className="col-md-2">
-                  <label htmlFor="email">Email</label>
-                </div>
-                <div className="col-md-10">
-                  <Field
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="name@provider.com"
-                  />
-                  <ErrorMessage name="email" component="div" className="text-danger" />
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <div className="col-md-2">
-                  <label htmlFor="phone_number">Phone Number</label>
-                </div>
-                <div className="col-md-10">
-                  <Field
-                    type="text"
-                    name="phone_number"
-                    className="form-control"
-                    placeholder="Enter Your Mobile Number"
-                  />
-                  <ErrorMessage name="phone_number" component="div" className="text-danger" />
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <div className="col-md-2">
-                  <label htmlFor="password">Password</label>
-                </div>
-                <div className="col-md-10">
-                  <Field
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Enter Your Password"
-                  />
-                  <ErrorMessage name="password" component="div" className="text-danger" />
-                </div>
-              </div>
-
-              <div className="row mb-3">
-                <div className="col-md-2">
-                  <label htmlFor="role">Role</label>
-                </div>
-                <div className="col-md-4">
-                  <Field as="select" name="role" className="form-control form-select">
-                    <option value="">Select role</option>
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                  </Field>
-                  <ErrorMessage name="role" component="div" className="text-danger" />
-                </div>
+              <div className="mb-3">
+                <label htmlFor="role" className="form-label">Role</label>
+                <Field as="select" name="role" className="form-select">
+                  <option value="">Select role</option>
+                  <option value="customer">Customer</option>
+                  <option value="admin">Admin</option>
+                </Field>
+                <ErrorMessage name="role" component="div" className="text-danger" />
               </div>
 
               <div className="d-flex justify-content-center">
@@ -161,14 +111,11 @@ const Register = ({ setRole }) => {
           )}
         </Formik>
         <div className="text-center mt-3">
-          <p>
-            Already have an account? <span>Sign in</span>.
-          </p>
+          <p>Already have an account?</p>
         </div>
       </div>
     </div>
   );
-
 };
 
 export default Register;

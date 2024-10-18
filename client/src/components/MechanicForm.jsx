@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "../css/mechanic_form.css"; // Update the path to the correct location
+
 
 function MechanicForm() {
   const [name, setMName] = useState("");

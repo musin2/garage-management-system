@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import Logout from "../pages/Logout";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import "../css/navbar.css"; // Update the path to the correct location
+
 
 function NavBar({ setRole, role, handleLogout}) {
 
@@ -15,7 +17,7 @@ function NavBar({ setRole, role, handleLogout}) {
 
   return (
     <>
-      <nav className="navbar navbar-expand-md navbar-light bg-light">
+      <nav className="navbar navbar-expand-md navbar-light bg-light ">
         <div className="container-sm">
           <Link to={"/home"} className="navbar-brand nav-link">
             Garage 66

@@ -1,0 +1,61 @@
+/* mechanics.css */
+
+/* General styles */
+body {
+    background-color: #f8f9fa; /* Light gray background for better contrast */
+    font-family: 'Chakra Petch', sans-serif; /* Your chosen Google Font */
+}
+
+
+
+/* Table styles */
+.table {
+    background-color: #ffffff; /* White background for the table */
+    border-radius: 0.5rem; /* Rounded corners */
+    overflow: hidden; /* Ensures border radius works */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-top: 20px; /* Spacing above the table */
+}
+
+/* Table header styles */
+.table thead {
+    background-color: #343a40; /* Dark background for header */
+    color: white; /* White text for header */
+}
+
+/* Table cell padding */
+.table td, .table th {
+    padding: 1rem; /* Padding for table cells */
+}
+
+/* Button styles */
+.btn-info {
+    background-color: #17a2b8; /* Bootstrap's info color */
+    border: none; /* Remove border */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+}
+
+.btn-info:hover {
+    background-color: #138496; /* Darker info color on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Centering the button */
+.text-center {
+    margin-top: 20px; /* Spacing above the button */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .container-sm {
+        padding: 10px; /* Less padding on smaller screens */
+    }
+
+    .table {
+        font-size: 0.9rem; /* Smaller font size for tables on mobile */
+    }
+
+    .btn-info {
+        font-size: 0.9rem; /* Smaller font size for buttons on mobile */
+    }
+}
