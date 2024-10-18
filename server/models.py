@@ -36,6 +36,7 @@ class User(db.Model,SerializerMixin):
         return False
 
     serialize_rules = ('-vehicles.owner', '-appointments.user')
+    
 
 
 # Vehicles Table (One-to-Many with Users)
@@ -131,21 +132,24 @@ class Appointment(db.Model):
     # Custom method to serialize the Appointment model
     def to_dict(self):
         return {
-            'id': self.id,
-            'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
-            'status': self.status,
-            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
-            'user': {
-                'id': self.user.id,
-                'name': self.user.name
-            },
-            'vehicle': {
-                'id': self.vehicle.id,
-                'make': self.vehicle.make,
-                'license_plate': self.vehicle.license_plate
-            },
-            'mechanic': {
-                'id': self.mechanic.id,
-                'name': self.mechanic.name
-            } if self.mechanic else None  # If no mechanic assigned, return None
-        }
+        'id': self.id,
+        'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+        'status': self.status,
+        'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+        'user': {
+            'id': self.user.id,
+            'name': self.user.name,
+            'email': self.user.email  # Added more details
+        } if self.user else None,  # Safety check for user (unlikely but good practice)
+        'vehicle': {
+            'id': self.vehicle.id,
+            'make': self.vehicle.make,
+            'model': self.vehicle.model,  # Added more details
+            'license_plate': self.vehicle.license_plate
+        } if self.vehicle else None,  # Safety check for vehicle
+        'mechanic': {
+            'id': self.mechanic.id,
+            'name': self.mechanic.name
+        } if self.mechanic else None  # Mechanic may be None
+    }
+
