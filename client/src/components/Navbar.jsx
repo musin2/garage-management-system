@@ -90,9 +90,9 @@ function NavBar({ setRole, role, handleLogout}) {
                 </>
               )}
             </ul>
-            {userRole && (
+            
               <Logout setRole={setRole} role={role} handleLogout={handleLogout} />
-            )}
+          
           </div>
         </div>
       </nav>

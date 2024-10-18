@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 
 const Register = ({ setRole }) => {
   const navigate = useNavigate();
@@ -32,17 +34,23 @@ const Register = ({ setRole }) => {
         setStatus({ success: true });
         setRole(response.data.role);
         localStorage.setItem('userRole', response.data.role); // Store role in local storage
+        Cookies.set("user_id", response.data.id, { expires: 7 });
+        Cookies.set("user_name", response.data.name, { expires: 7 });
+        Cookies.set("user_email", response.data.email, { expires: 7 });
+        Cookies.set("user_phone", response.data.phone_number, { expires: 7 });
+        Cookies.set("user_role", response.data.role, { expires: 7 });
         navigate("/home");
       })
       .catch((error) => {
+        const errorMessage = error.response?.data?.error || "Registration failed"; // Updated error handling
         setStatus({
-          error: error.response.data.error || "Registration failed",
+          error: errorMessage,
         });
       })
       .finally(() => {
         setSubmitting(false);
       });
-  };
+};
 
   return (
     <div className="container-md d-flex justify-content-center">

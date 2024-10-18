@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import NavBar from '../components/Navbar';
+import "../App.css"
 
 const About = () => {
     const [services, setServices] = useState([]);
@@ -32,61 +32,44 @@ const About = () => {
 
     return (
         <>
-        <NavBar/>
+            <NavBar />
+            <div className="container">
+            <h1>About Us</h1>
+    <header>
+        <p>Welcome to Garage 66! We are dedicated to providing high-quality automotive services to our valued customers.</p>
+    </header>
 
-        <Container className="mt-5">
-            <header className="text-center mb-4">
-                <h1 className="display-4 font-weight-bold">About Us</h1>
-                <p className="lead text-muted">
-                    Welcome to Garage 66! We are dedicated to providing high-quality automotive services to our valued customers.
-                </p>
-            </header>
+    <section className="mission">
+        <h2>Our Mission</h2>
+        <p>Our mission is to ensure your vehicle runs smoothly and safely, so you can enjoy peace of mind on the road.</p>
+    </section>
 
-            <section className="mb-5">
-                <h2 className="text-center">Our Mission</h2>
-                <p className="text-center">
-                    Our mission is to ensure your vehicle runs smoothly and safely, so you can enjoy peace of mind on the road.
-                </p>
-            </section>
+    <section className="services">
+        <h2>Our Services</h2>
+        <div className="service-grid">
+            {services.map((service) => (
+                <div key={service.id} className="service-card">
+                    <h3>{service.service_name}</h3>
+                    <p>{service.description}</p>
+                    <span className="service-price">Price: ${service.price}</span>
+                </div>
+            ))}
+        </div>
+    </section>
 
-            <section className="mb-5">
-                <h2 className="text-center">Our Services</h2>
-                <Row>
-                    {services.map((service) => (
-                        <Col md={4} key={service.id} className="mb-4">
-                            <Card className="shadow-sm">
-                                <Card.Body>
-                                    <Card.Title className="font-weight-bold">{service.service_name}</Card.Title>
-                                    <Card.Text>{service.description}</Card.Text>
-                                    <Card.Footer className="bg-light border-top-0">
-                                        <strong>Price: ${service.price}</strong>
-                                        {/* <Button variant="info" className="float-end">Learn More</Button> */}
-                                    </Card.Footer>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
-            </section>
+    <section className="team">
+        <h2>Our Team</h2>
+        <p>Our team consists of experienced and certified technicians who are passionate about automobiles...</p>
+    </section>
 
-            <section className="mb-5">
-                <h2 className="text-center">Our Team</h2>
-                <p className="text-center">
-                    Our team consists of experienced and certified technicians who are passionate about automobiles. We are committed to providing excellent customer service and ensuring your satisfaction with every visit.
-                </p>
-            </section>
+    <section className="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions or would like to schedule an appointment, reach us at <strong>info@garage66.com</strong>...</p>
+        <h3>Visit Us</h3>
+        <p><strong>123 Garage Lane, Nairobi City</strong></p>
+    </section>
+</div>
 
-            <section className="mb-5">
-                <h2 className="text-center">Contact Us</h2>
-                <p className="text-center">
-                    If you have any questions or would like to schedule an appointment, feel free to reach out to us at <strong>info@garage66.com</strong> or call us at <strong>+254 703222333</strong>.
-                </p>
-                <h3 className="text-center">Visit Us</h3>
-                <p className="text-center">
-                    <strong>123 Garage Lane, Nairobi City</strong>
-                </p>
-            </section>
-        </Container>
         </>
     );
 };

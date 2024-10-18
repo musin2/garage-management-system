@@ -24,12 +24,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 app.config['SECRET_KEY'] = 'secret_key'
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
-# session.permanent = True
-app.config['SESSION_TYPE'] = 'filesystem'  # Store sessions in files
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SESSION_TYPE'] = 'filesystem'
 
-Session(app) 
 
 
 
@@ -42,10 +38,9 @@ db.init_app(app)
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        print("Checking admin access...")  # Debugging: Check if this is called
-        role = request.cookies.get('user_role')  # Get role from cookies
-        print("Current Role in Cookies:", role)
-        
+        print("Checking admin access...")
+        role = session.get('role')  # Get user role from the session
+        print("Current Role in Session:", role)
         if role != 'admin':
             return jsonify({"error": "Admin access required"}), 403
         return f(*args, **kwargs)
@@ -57,6 +52,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # User Registration
+from flask import make_response  # Import make_response
+from werkzeug.security import generate_password_hash  # Ensure this is imported
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -64,35 +62,52 @@ def register():
         
         hashed_password = generate_password_hash(data['password'])
 
-
         new_user = User(
             name=data['name'], 
             email=data['email'], 
             phone_number=data['phone_number'],
             password=hashed_password,
             role=data['role']
-            
         )
+        
         db.session.add(new_user)
         db.session.commit()
         
+        # Store user data in the session (optional)
         session['user_id'] = new_user.id
         session['role'] = new_user.role
         session['name'] = new_user.name
         session['phone_number'] = new_user.phone_number
         session['email'] = new_user.email
         
-        
-        return jsonify({"message": "User registered successfully!", 
-                        "id": new_user.id,
-                        "name": new_user.name,
-                        "phone_number": new_user.phone_number,
-                        "role": new_user.role,
-                        "email": new_user.email}), 201
-    
+        # Create a response object
+        response = make_response(jsonify({
+            "message": "User registered successfully!", 
+            "id": new_user.id,
+            "name": new_user.name,
+            "phone_number": new_user.phone_number,
+            "role": new_user.role,
+            "email": new_user.email
+        }), 201)
+
+        # Set cookies
+        response.set_cookie("user_id", str(new_user.id), httponly=True, expires=7 * 24 * 60 * 60)  # 7 days
+        response.set_cookie("user_name", new_user.name, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_email", new_user.email, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_phone", new_user.phone_number, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_role", new_user.role, httponly=True, expires=7 * 24 * 60 * 60)
+
+        return response  # Return the response object with cookies
+
     except Exception as e:
         db.session.rollback()  # Rollback in case of error
         return jsonify({"error": str(e)}), 500
+
+    
+@app.route('/session', methods=['GET'])
+def get_session():
+    return jsonify(session), 200
+
     
 # User Login
 @app.route('/login', methods=['POST'])
@@ -104,9 +119,14 @@ def login():
     user = User.query.filter_by(email=email).first()
     
     if user and check_password_hash(user.password, password):
-        # Store user info in session (optional)
+        # Store user info in session
         session['user_id'] = user.id
         session['name'] = user.name
+        session['role'] = user.role
+        session['phone_number'] = user.phone_number
+        session['email'] = user.email
+        
+        print("Session after login:", session)
         
         # Create a response object to set cookies
         response = make_response(jsonify({
@@ -117,10 +137,7 @@ def login():
             "role": user.role,
             "email": user.email
         }), 200)
-        
-        # Set the role in a cookie (ensure no httponly for localhost testing)
-        response.set_cookie('user_role', user.role)  # Consider expiration if needed
-        
+                
         return response
     
     return jsonify({"error": "Invalid credentials"}), 401
@@ -129,10 +146,9 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.clear()  # Clear the entire session
-
+    session.clear()
     response = make_response(jsonify({"message": "Logged out successfully!"}), 200)
-    response.set_cookie('session', '', expires=0)  # Clear session cookie
+    response.set_cookie('session', '', expires=0) 
     
     return response
 
