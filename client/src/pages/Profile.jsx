@@ -128,9 +128,9 @@ function Profile() {
                 </form>
               ) : (
                 <div>
-                  <span><i className="bi bi-person-fill"></i> {Cookies.get('user_name')} </span><br/>
-                  <span><i className="bi bi-envelope-fill"></i> {Cookies.get('user_email')}</span><br/>
-                  <span><i className="bi bi-telephone-fill"></i> {Cookies.get('user_phone')}</span><br/>
+                  <span><i className="bi bi-person-fill m-1"></i> {Cookies.get('user_name')} </span><br/>
+                  <span><i className="bi bi-envelope-fill m-1"></i> {Cookies.get('user_email')}</span><br/>
+                  <span><i className="bi bi-telephone-fill m-1"></i> {Cookies.get('user_phone')}</span><br/>
                   <button className="btn btn-outline-info m-2" onClick={handleEditClick}>
                     Edit Details
                   </button>
