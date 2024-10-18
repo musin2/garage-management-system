@@ -33,6 +33,9 @@ function Profile() {
   const handleEditClick = () => {
     setIsEditing(true);
   };
+  function handleCancel() {
+    setIsEditing(false);
+  }
 
   // Handle form field changes
   const handleInputChange = (e) => {
@@ -116,8 +119,11 @@ function Profile() {
                       className="form-control"
                     />
                   </div>
-                  <button type="submit" className="btn btn-info mt-3">
+                  <button type="submit" className="btn btn-info m-2">
                     Save Changes
+                  </button>
+                  <button onClick={handleCancel} className="btn btn-info m-2">
+                    Cancel
                   </button>
                 </form>
               ) : (
@@ -125,9 +131,12 @@ function Profile() {
                   <span><i className="bi bi-person-fill"></i> {Cookies.get('user_name')} </span><br/>
                   <span><i className="bi bi-envelope-fill"></i> {Cookies.get('user_email')}</span><br/>
                   <span><i className="bi bi-telephone-fill"></i> {Cookies.get('user_phone')}</span><br/>
-                  <button className="btn btn-outline-info mt-3" onClick={handleEditClick}>
+                  <button className="btn btn-outline-info m-2" onClick={handleEditClick}>
                     Edit Details
                   </button>
+                  <Link to={'/register-vehicle'}><button className="btn btn-outline-info m-2">
+                    Register Vehicle
+                  </button></Link>
                 </div>
               )}
             </div>

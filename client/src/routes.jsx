@@ -8,6 +8,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import About from "./pages/About.jsx";
 import CreateAppointment from "./pages/CreateAppointment.jsx";
+import RegisterVehicle from "./pages/RegisterVehicle.jsx"
 
 const routes = [
     {path:"/", element: <App/>, errorElement: <ErrorPage/>},
@@ -18,7 +19,8 @@ const routes = [
     {path: "/about", element: <About/>, errorElement: <ErrorPage/>},
     {path:"/register", element:<Register/>, errorElement: <ErrorPage/> },
     {path:"/login" ,element:<Login/>, errorElement: <ErrorPage/>},
-    {path: "/appointmentsForm", element: <CreateAppointment/>, errorElement: <ErrorPage/>}
+    {path: "/appointmentsForm", element: <CreateAppointment/>, errorElement: <ErrorPage/>},
+    {path: "/register-vehicle", element: <RegisterVehicle/>, errorElement: <ErrorPage/>}
 ];
 
 export default routes;
