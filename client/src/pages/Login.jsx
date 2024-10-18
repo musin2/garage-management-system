@@ -26,6 +26,7 @@ const Login = ({ setRole }) => {
           Cookies.set('user_name', response.data.name,{expires: 7});
           Cookies.set('user_email', response.data.email,{expires: 7});
           Cookies.set('user_phone', response.data.phone_number,{expires: 7});
+          Cookies.set('user_role', response.data.role,{expires: 7});
           alert(response.data.message);
           navigate('/home'); 
         })
