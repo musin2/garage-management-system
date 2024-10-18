@@ -1,8 +1,9 @@
 from flask import Flask, request, make_response, jsonify, session
+from flask_session import Session
 from models import db, User, Vehicle, Service, Appointment
 from flask import Flask, request, make_response, jsonify
 from models import db, User, Vehicle, Service, Appointment,Mechanic
-from datetime import datetime
+from datetime import datetime,timedelta
 from flask_migrate import Migrate
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +24,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 app.config['SECRET_KEY'] = 'secret_key'
+app.config['SESSION_TYPE'] = 'filesystem'
+
 
 
 
@@ -47,6 +50,9 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 # User Registration
+from flask import make_response  # Import make_response
+from werkzeug.security import generate_password_hash  # Ensure this is imported
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -54,34 +60,52 @@ def register():
         
         hashed_password = generate_password_hash(data['password'])
 
-
         new_user = User(
             name=data['name'], 
             email=data['email'], 
             phone_number=data['phone_number'],
             password=hashed_password,
             role=data['role']
-            
         )
+        
         db.session.add(new_user)
         db.session.commit()
         
+        # Store user data in the session (optional)
         session['user_id'] = new_user.id
         session['role'] = new_user.role
         session['name'] = new_user.name
         session['phone_number'] = new_user.phone_number
         session['email'] = new_user.email
         
-        return jsonify({"message": "User registered successfully!", 
-                        "id": new_user.id,
-                        "name": new_user.name,
-                        "phone_number": new_user.phone_number,
-                        "role": new_user.role,
-                        "email": new_user.email}), 201
-    
+        # Create a response object
+        response = make_response(jsonify({
+            "message": "User registered successfully!", 
+            "id": new_user.id,
+            "name": new_user.name,
+            "phone_number": new_user.phone_number,
+            "role": new_user.role,
+            "email": new_user.email
+        }), 201)
+
+        # Set cookies
+        response.set_cookie("user_id", str(new_user.id), httponly=True, expires=7 * 24 * 60 * 60)  # 7 days
+        response.set_cookie("user_name", new_user.name, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_email", new_user.email, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_phone", new_user.phone_number, httponly=True, expires=7 * 24 * 60 * 60)
+        response.set_cookie("user_role", new_user.role, httponly=True, expires=7 * 24 * 60 * 60)
+
+        return response  # Return the response object with cookies
+
     except Exception as e:
         db.session.rollback()  # Rollback in case of error
         return jsonify({"error": str(e)}), 500
+
+    
+@app.route('/session', methods=['GET'])
+def get_session():
+    return jsonify(session), 200
+
     
 # User Login
 @app.route('/login', methods=['POST'])
@@ -90,38 +114,41 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    # Query user by email
     user = User.query.filter_by(email=email).first()
     
-    # Check if user exists and password is correct
     if user and check_password_hash(user.password, password):
-        session['user_id'] = user.id  # Store user ID in session
-        session['role'] = user.role  # Store user role in session
+        # Store user info in session
+        session['user_id'] = user.id
         session['name'] = user.name
-        session['phone_number'] = user.phone_number 
+        session['role'] = user.role
+        session['phone_number'] = user.phone_number
         session['email'] = user.email
         
-        return jsonify({
+        print("Session after login:", session)
+        
+        # Create a response object to set cookies
+        response = make_response(jsonify({
             "message": "Login successful", 
             "id": user.id,
             "name": user.name,
             "phone_number": user.phone_number,
             "role": user.role,
             "email": user.email
-            
-            
-            
-        }), 200
+        }), 200)
+                
+        return response
     
-    # If login failed
     return jsonify({"error": "Invalid credentials"}), 401
+
 
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    session.pop('user_id', None)  # Clear the user_id from the session
-    session.pop('role', None)     # Clear the role from the session
-    return jsonify({"message": "Logged out successfully!"}), 200
+    session.clear()
+    response = make_response(jsonify({"message": "Logged out successfully!"}), 200)
+    response.set_cookie('session', '', expires=0) 
+    
+    return response
 
 @app.route('/get-role', methods=['GET'])
 def get_role():
@@ -258,7 +285,7 @@ def get_services():
 # Garage Owner: Manage Services
 
 @app.route('/services', methods=['POST'])
-@admin_required
+# @admin_required
 def add_service():
     data = request.get_json()
     new_service = Service(
@@ -276,7 +303,7 @@ def add_service():
 
 
 @app.route('/services/<int:service_id>', methods=['PATCH'])
-@admin_required
+# @admin_required
 def update_service(service_id):
     service = Service.query.get_or_404(service_id)
     data = request.get_json()
@@ -294,8 +321,9 @@ def update_service(service_id):
 
 
 @app.route('/services/<int:service_id>', methods=['DELETE'])
-@admin_required
+# @admin_required
 def delete_service(service_id):
+    print("Current Session on DELETE request:", session)
     service = Service.query.get_or_404(service_id)
     db.session.delete(service)
     db.session.commit()
@@ -371,7 +399,7 @@ def schedule_appointment():
         return jsonify({"error": "Could not schedule appointment. Please try again later."}), 500
 
 @app.route('/appointments/<int:appointment_id>', methods=['PATCH'])
-@admin_required
+# @admin_required
 def update_appointment_status(appointment_id):
     # Fetch the appointment by ID
     appointment = Appointment.query.get_or_404(appointment_id)

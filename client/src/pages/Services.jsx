@@ -58,6 +58,10 @@ function Services() {
     try {
       const response = await fetch(`http://127.0.0.1:5555/services/${id}`, {
         method: "DELETE",
+        credentials: "include", // This is crucial for sending cookies
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -101,40 +105,45 @@ function Services() {
         <form onSubmit={handleAddService} className="form m-2">
           <div className="row">
             <div className="col-auto m-1">
-            <input
+              <input
                 type="text"
                 placeholder="Service Name"
                 value={newService.service_name}
                 onChange={(e) =>
-                setNewService({ ...newService, service_name: e.target.value })
+                  setNewService({ ...newService, service_name: e.target.value })
                 }
                 required
                 className="form-control"
-            /></div>
+              />
+            </div>
             <div className="col-auto m-1">
-            <input
+              <input
                 type="text"
                 placeholder="Description"
                 value={newService.description}
                 onChange={(e) =>
-                setNewService({ ...newService, description: e.target.value })
+                  setNewService({ ...newService, description: e.target.value })
                 }
                 required
                 className="form-control"
-            /></div>
+              />
+            </div>
             <div className="col-auto m-1">
-            <input
+              <input
                 type="number"
                 placeholder="Price"
                 value={newService.price}
                 onChange={(e) =>
-                setNewService({ ...newService, price: e.target.value })
+                  setNewService({ ...newService, price: e.target.value })
                 }
                 required
                 className="form-control"
-            /></div>
+              />
+            </div>
             <div className="col-auto m-1">
-            <button type="submit" className="btn-sm btn-outline-dark">Add Service</button>
+              <button type="submit" className="btn-sm btn-outline-dark">
+                Add Service
+              </button>
             </div>
           </div>
         </form>
@@ -189,48 +198,56 @@ function Services() {
         {serviceToUpdate && (
           <form onSubmit={handleUpdateService} className="form">
             <div className="row">
-                <div className="col-auto m-1">
+              <div className="col-auto m-1">
                 <input
-                type="text"
-                placeholder="Service Name"
-                value={updateService.service_name}
-                onChange={(e) =>
+                  type="text"
+                  placeholder="Service Name"
+                  value={updateService.service_name}
+                  onChange={(e) =>
                     setUpdateService({
-                    ...updateService,
-                    service_name: e.target.value,
+                      ...updateService,
+                      service_name: e.target.value,
                     })
-                }
-                required
-                className="form-control"
-                /></div>
-                <div className="col-auto m-1">
+                  }
+                  required
+                  className="form-control"
+                />
+              </div>
+              <div className="col-auto m-1">
                 <input
-                type="text"
-                placeholder="Description"
-                value={updateService.description}
-                onChange={(e) =>
+                  type="text"
+                  placeholder="Description"
+                  value={updateService.description}
+                  onChange={(e) =>
                     setUpdateService({
-                    ...updateService,
-                    description: e.target.value,
+                      ...updateService,
+                      description: e.target.value,
                     })
-                }
-                required
-                className="form-control"
-                /></div>
-                <div className="col-auto m-1">
+                  }
+                  required
+                  className="form-control"
+                />
+              </div>
+              <div className="col-auto m-1">
                 <input
-                type="number"
-                placeholder="Price"
-                value={updateService.price}
-                onChange={(e) =>
-                    setUpdateService({ ...updateService, price: e.target.value })
-                }
-                required
-                className="form-control"
-                /></div>
-                <div className="col-auto m-1">
-                <button type="submit" className="btn btn-outline-dark">Update Service</button>
-                </div>
+                  type="number"
+                  placeholder="Price"
+                  value={updateService.price}
+                  onChange={(e) =>
+                    setUpdateService({
+                      ...updateService,
+                      price: e.target.value,
+                    })
+                  }
+                  required
+                  className="form-control"
+                />
+              </div>
+              <div className="col-auto m-1">
+                <button type="submit" className="btn btn-outline-dark">
+                  Update Service
+                </button>
+              </div>
             </div>
           </form>
         )}
