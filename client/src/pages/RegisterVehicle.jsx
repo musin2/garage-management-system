@@ -3,7 +3,6 @@ import NavBar from "../components/Navbar";
 import Cookies from "js-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import "../css/register_vehicle.css"; // Update the path to the correct location
 
 
 function RegisterVehicle(params) {

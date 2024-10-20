@@ -1,9 +1,5 @@
 /* login.css */
-body {
-  font-family: 'Chakra Petch', sans-serif; /* Ensure the font is applied */
-  background: linear-gradient(to right, #FF8235, #30E8BF); /* Gradient background */
-  color: #343a40; /* Default text color */
-}
+
 
 h1, h2, p {
   font-family: 'Chakra Petch', sans-serif; /* Apply font to headings and paragraphs */
@@ -14,32 +10,7 @@ h1, h2, p {
 .container-md {
   margin-top: 5%; /* Center the form vertically */
   padding: 20px; /* Add padding to the container */
-  background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque white background for better contrast */
   border-radius: 0.5rem; /* Rounded corners */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-.btn-info {
-  background-color: #17a2b8; /* Bootstrap's info color */
-  border: none; /* Remove default border */
-  transition: background-color 0.3s ease, transform 0.2s; /* Smooth transition */
-  padding: 10px 20px; /* Add padding for better button size */
-  font-weight: bold; /* Make button text bold */
-}
-
-.btn-info:hover {
-  background-color: #138496; /* Darker shade on hover */
-  transform: scale(1.05); /* Slightly enlarge button on hover */
-}
-
-.alert {
-  margin-bottom: 1rem;
-  font-weight: bold; /* Bold text for alerts */
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque background for alerts */
-  border-radius: 0.25rem; /* Rounded corners for alerts */
-  padding: 10px; /* Padding inside alert */
-}
-
-.form-label {
-  font-weight: bold; 
-}

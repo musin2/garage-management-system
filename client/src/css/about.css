@@ -1,4 +1,4 @@
-/* About.css or App.css */
+/* About.css */
 
 .container {
     max-width: 800px; /* Set a maximum width for the content */
@@ -16,7 +16,7 @@ h1 {
 
 h2 {
     margin-top: 20px; /* Add space above section headings */
-    color: #007bff; /* Bootstrap primary color for headings */
+    color: #343a40; /* Darker text color */
 }
 
 header, section {

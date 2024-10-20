@@ -2,9 +2,9 @@
 
 /* General styles */
 body {
-    background-color: #f8f9fa; /* Light gray background */
     font-family: 'Chakra Petch', sans-serif; /* Your chosen Google Font */
-    background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #bbd2c5, #536976); /* Gradient background */
+
 
 }
 

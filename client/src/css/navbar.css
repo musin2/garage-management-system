@@ -1,16 +1,9 @@
 /* navbar.css */
 
 /* Navbar styles */
-.navbar {
-    background-color: whitesmoke; /* A deeper teal color for the navbar */
-    font-family: 'Chakra Petch', sans-serif; /* Ensure the font is applied */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-    background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-}
 
 .navbar-brand {
-    background: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     font-size: 1.75rem; /* Larger font size for brand */
     font-weight: bold; /* Bold text for brand */
     transition: color 0.3s; /* Smooth color transition */
@@ -30,12 +23,9 @@
 .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
     color: #e0f7fa; /* Lighter color on hover */
+    text-decoration: underline;
 }
 
-.nav-link.active {
-    background-color:linear-gradient(to right, #FF8235, #30E8BF); /* Darker teal for active link */
-    color: #ffffff; /* White text for active link */
-}
 
 .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.3); /* Light border for toggler */
