@@ -1,0 +1,12 @@
+/* register.css */
+
+
+h1, h2, p {
+  font-family: 'Chakra Petch', sans-serif; /* Apply font to headings and paragraphs */
+  color: #343a40; /* Dark gray for better readability */
+}
+
+.container-md {
+  margin-top: 5%; /* Center the form vertically */
+}
+

@@ -1,0 +1,16 @@
+/* login.css */
+
+
+h1, h2, p {
+  font-family: 'Chakra Petch', sans-serif; /* Apply font to headings and paragraphs */
+  color: #343a40; /* Dark gray for better readability */
+  margin-bottom: 0.5rem; /* Space between headings and paragraphs */
+}
+
+.container-md {
+  margin-top: 5%; /* Center the form vertically */
+  padding: 20px; /* Add padding to the container */
+  border-radius: 0.5rem; /* Rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+

@@ -1,0 +1,75 @@
+/* Profile.css */
+
+.container-md {
+    max-width: 900px; /* Set a maximum width for the container */
+    margin: auto; /* Center the container */
+    padding: 20px; /* Add padding around the container */
+}
+
+.row {
+    margin: 20px 0; /* Space between rows */
+}
+
+h4 {
+    color: #343a40; /* Darker text color */
+    margin-bottom: 20px; /* Space below headings */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space below form groups */
+}
+
+.form-control {
+    border-radius: 0.25rem; /* Rounded corners for inputs */
+    border: 1px solid #ced4da; /* Light border color */
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Shadow effect on focus */
+}
+
+.btn-info {
+    background-color: #17a2b8; /* Bootstrap info color */
+    border-color: #17a2b8; /* Match border to background */
+}
+
+.btn-info:hover {
+    background-color: #138496; /* Darken button on hover */
+    border-color: #117a8b; /* Darken border on hover */
+}
+
+.btn-outline-info {
+    color: #17a2b8; /* Bootstrap outline button color */
+    border-color: #17a2b8; /* Border color for outline button */
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8; /* Darken button on hover */
+    color: white; /* Change text color on hover */
+}
+
+.table {
+    margin-top: 20px; /* Space above the table */
+}
+
+.table th, .table td {
+    text-align: center; /* Center align table headers and cells */
+}
+
+.table thead {
+    background-color: #343a40; /* Dark background for the table header */
+    color: white; /* White text color for the header */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light background for even rows */
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #e9ecef; /* Slightly darker background for odd rows */
+}
+
+.text-danger {
+    color: red; /* Red color for error messages */
+}

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
 import MechanicForm from "../components/MechanicForm";
+import "../css/mechanics.css"; // Update the path to the correct location
+
 
 function Mechanics() {
     const [mechanics, setMechanics] = useState([])    //potential naming issue****

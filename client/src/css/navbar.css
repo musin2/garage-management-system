@@ -1,0 +1,52 @@
+/* navbar.css */
+
+/* Navbar styles */
+
+
+.navbar-brand {
+    font-size: 1.75rem; /* Larger font size for brand */
+    font-weight: bold; /* Bold text for brand */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.navbar-brand:hover {
+    color: #80cbc4; /* Lighter teal color on hover */
+}
+
+.nav-link {
+    color: #ffffff; /* White text color for links */
+    padding: 0.75rem 1.5rem; /* Increased padding for better click area */
+    border-radius: 0.5rem; /* Rounded corners for links */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
+    color: #e0f7fa; /* Lighter color on hover */
+    text-decoration: underline;
+}
+
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3); /* Light border for toggler */
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' d='M4 7h22M4 15h22m-9 8h9'/%3E%3C/svg%3E");
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.5rem; /* Less padding on mobile */
+    }
+
+    .nav-link {
+        padding: 0.5rem; /* Less padding for nav links on mobile */
+        font-size: 1rem; /* Slightly smaller font size for mobile */
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem; /* Smaller brand font size on mobile */
+    }
+}

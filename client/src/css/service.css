@@ -1,0 +1,90 @@
+/* services.css */
+
+/* General styles */
+
+
+/* Main heading styles */
+h3 {
+    font-size: 2.5rem; /* Large font size */
+    font-weight: 600; /* Semi-bold font weight */
+    color: #343a40; /* Dark gray color for contrast */
+    text-align: center; /* Center the heading */
+    margin-bottom: 20px; /* Spacing below the heading */
+}
+
+/* Form styles */
+.form {
+    background-color: #ffffff; /* White background for forms */
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    padding: 20px; /* Padding inside the form */
+    margin: 20px 0; /* Margin around the form */
+}
+
+/* Input styles */
+.form-control {
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 0.25rem; /* Slightly rounded corners */
+    transition: border-color 0.3s; /* Smooth transition on focus */
+}
+
+.form-control:focus {
+    border-color: #80bdff; /* Bootstrap's primary focus color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Bootstrap's primary focus shadow */
+}
+
+/* Button styles */
+.btn-outline-dark {
+    border: 1px solid #343a40; /* Dark border for the button */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+}
+
+.btn-outline-dark:hover {
+    background-color: #343a40; /* Dark background on hover */
+    color: #ffffff; /* White text on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Table styles */
+.table {
+    background-color: #ffffff; /* White background for the table */
+    border-radius: 0.5rem; /* Rounded corners */
+    overflow: hidden; /* Ensures border radius works */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-top: 20px; /* Spacing above the table */
+}
+
+.table th {
+    background-color: #17a2b8; /* Bootstrap's info color */
+    color: white; /* White text for the header */
+    font-weight: bold; /* Bold font for header */
+}
+
+.table td {
+    padding: 1rem; /* Padding for table cells */
+}
+
+.table tr:hover {
+    background-color: #e0f7fa; /* Light blue background on hover */
+}
+
+/* Alert styles */
+p.error-message {
+    color: #dc3545; /* Bootstrap danger color for errors */
+    font-weight: bold; /* Bold text for visibility */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    h3 {
+        font-size: 2rem; /* Smaller heading for mobile */
+    }
+
+    .form {
+        padding: 15px; /* Less padding on mobile */
+    }
+
+    .btn {
+        font-size: 0.9rem; /* Smaller font size for buttons on mobile */
+    }
+}

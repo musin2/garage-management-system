@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+
 function RegisterVehicle(params) {
   const [make, setMake] = useState();
   const [model, setModel] = useState();

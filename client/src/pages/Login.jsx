@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import "../css/register.css"; // Update the path to the correct location
 import axios from "axios";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -40,38 +41,38 @@ const Login = ({ setRole }) => {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center ">
-      <div className="col-md-4">
-        <h2 className="text-center">Login</h2>
+    <div className="container d-flex justify-content-center align-items-center min-vh-90">
+      <div className="col-md-4 shadow p-4 rounded bg-light">
+        <h2 className="text-center mb-4 text-info">Login</h2>
         <Formik
           initialValues={{ email: '', password: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, status }) => (
-            <Form className="form-inline">
+            <Form className="form">
               {status?.error && <div className="alert alert-danger">{status.error}</div>}
               
-              <div className="form-group mb-2">
-                <label htmlFor="email" className="sr-only">Email</label>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">Email</label>
                 <Field 
                   type="email" 
                   name="email" 
-                  className="form-control mr-sm-2" 
+                  className="form-control" 
                   id="email" 
-                  placeholder="Email" 
+                  placeholder="email" 
                 />
                 <ErrorMessage name="email" component="div" className="text-danger" />
               </div>
               
-              <div className="form-group mx-sm-3 mb-2">
-                <label htmlFor="password" className="sr-only">Password</label>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Password</label>
                 <Field 
                   type="password" 
                   name="password" 
                   className="form-control" 
                   id="password" 
-                  placeholder="Password" 
+                  placeholder="password" 
                 />
                 <ErrorMessage name="password" component="div" className="text-danger" />
               </div>
@@ -80,7 +81,7 @@ const Login = ({ setRole }) => {
               <div className="d-flex justify-content-center">
                 <button 
                   type="submit" 
-                  className="btn btn-info mb-2" 
+                  className="btn btn-info" 
                   disabled={isSubmitting}
                 >
                   Login
@@ -89,11 +90,12 @@ const Login = ({ setRole }) => {
             </Form>
           )}
         </Formik>
-        <div className="text-center mt-3">Sign up instead?</div>
+        <div className="text-center mt-3">
+          <p>Don't have an account?</p>
+        </div>
       </div>
     </div>
   );
-  
 };
 
 export default Login;

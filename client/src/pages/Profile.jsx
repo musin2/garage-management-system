@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import "../css/profile.css"; // Update the path to the correct location
+
 
 function Profile() {
   const [appointments, setAppointments] = useState([]);

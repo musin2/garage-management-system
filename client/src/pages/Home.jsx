@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import "../css/home.css"; // Update the path to the correct location
+
 
 
 function Home({ setRole, role, handleLogout }) {
@@ -35,7 +37,6 @@ function Home({ setRole, role, handleLogout }) {
         handleLogout={handleLogout}
         userRole={userRole}
       />
-      <h1 className="text-center m-3">Home</h1>
       <div className="container-md p-2">
         <div className="row justify-content-between">
           <div className="col-3">
