@@ -161,6 +161,8 @@ function Profile() {
                     <th>Service Date</th>
                     <th>Status</th>
                     <th>License Plate</th>
+                    <th>Mechanic</th>
+                    <th>Service</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -171,6 +173,8 @@ function Profile() {
                         <td>{app.service_date}</td>
                         <td>{app.status}</td>
                         <td>{app.vehicle.license_plate}</td>
+                        <td>{app.mechanic.name}</td>
+                        <td>{app.service.name}</td>
                       </tr>
                     );
                   })}

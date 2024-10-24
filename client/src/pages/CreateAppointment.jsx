@@ -14,6 +14,7 @@ function CreateAppointment() {
   const [vehicle_plate, setVehiclePlate] = useState(''); // Vehicle plate input
   const [service_date, setServiceDate] = useState('');
   const [services, setServices] = useState([]);
+  const [service_id, setServiceId] = useState('');
   const [mechanic_id, setMechanicId] = useState('');
   const [mechanics, setMechanics] = useState([]);
 
@@ -49,15 +50,15 @@ function CreateAppointment() {
         alert('Failed to load vehicles');
       });
 
-      // fetch('http://127.0.0.1:5555/services')
-      // .then((response)=> {
-      //   if (!response.ok) {
-      //     throw new Error("Failed to fetch services");
-      //   }
-      //   return response.json();
-      // })
-      // .then((data) => setServices(data))
-      // .catch((error)=>console.error(error));
+      fetch('http://127.0.0.1:5555/services')
+      .then((response)=> {
+        if (!response.ok) {
+          throw new Error("Failed to fetch services");
+        }
+        return response.json();
+      })
+      .then((data) => setServices(data))
+      .catch((error)=>console.error(error));
   }, []);
   
 
@@ -67,8 +68,8 @@ function CreateAppointment() {
     let user_id=Cookies.get("user_id")
 
     // Validate user_id and vehicle_plate
-    if (!user_id || !vehicle_plate) {
-      alert('Please provide both user ID and vehicle ID.');
+    if (!user_id || !vehicle_plate || !service_id) {
+      alert('Missing userID / vehilce license plate / Service.');
       return;
     }
 
@@ -78,6 +79,7 @@ function CreateAppointment() {
       user_id,
       vehicle_plate,
       status: 'scheduled',
+      service_id
     };
 
     fetch('http://127.0.0.1:5555/appointments', {
@@ -177,9 +179,9 @@ function CreateAppointment() {
                 ))}
               </select>
             </div>
-            {/* <div className="col m-1">
+            <div className="col m-1">
               <label htmlFor="service">Service</label>
-              <select name="service" id="service">
+              <select name="service" id="service" onChange={(e)=> setServiceId(e.target.value)}>
                 <option value="">Select A Service</option>
                 {services.map((s)=> {
                   return( 
@@ -187,7 +189,7 @@ function CreateAppointment() {
                   )
                 })}
               </select>
-            </div> */}
+            </div>
           </div>
           <div className="row text-center">
             <div className="col">
