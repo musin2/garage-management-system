@@ -27,7 +27,7 @@ function RegisterVehicle(params) {
       vehicle_plate,
     };
 
-    fetch(`http://127.0.0.1:5555/users/${Cookies.get("user_id")}/vehicles`, {
+    fetch(`https://garage-backend-59fg.onrender.com/users/${Cookies.get("user_id")}/vehicles`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newVehicle),

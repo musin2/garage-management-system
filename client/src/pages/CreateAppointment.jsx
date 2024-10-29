@@ -20,7 +20,7 @@ function CreateAppointment() {
 
   // Fetch mechanics/vehicles when the component mounts
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/mechanics') 
+    fetch('https://garage-backend-59fg.onrender.com/mechanics') 
       .then(response => {
         if (!response.ok) {
           throw new Error(`Could not fetch mechanics: ${response.status}`);
@@ -35,7 +35,7 @@ function CreateAppointment() {
         alert('Failed to load mechanics');
       });
 
-      fetch(`http://127.0.0.1:5555/users/${Cookies.get("user_id")}/vehicles`)
+      fetch(`https://garage-backend-59fg.onrender.com/users/${Cookies.get("user_id")}/vehicles`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`Could not fetch vehicles: ${response.status}`);
@@ -50,7 +50,7 @@ function CreateAppointment() {
         alert('Failed to load vehicles');
       });
 
-      fetch('http://127.0.0.1:5555/services')
+      fetch('https://garage-backend-59fg.onrender.com/services')
       .then((response)=> {
         if (!response.ok) {
           throw new Error("Failed to fetch services");
@@ -82,7 +82,7 @@ function CreateAppointment() {
       service_id
     };
 
-    fetch('http://127.0.0.1:5555/appointments', {
+    fetch('https://garage-backend-59fg.onrender.com/appointments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

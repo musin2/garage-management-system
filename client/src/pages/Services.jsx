@@ -25,7 +25,7 @@ function Services() {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5555/services");
+      const response = await fetch("https://garage-backend-59fg.onrender.com/services");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -40,7 +40,7 @@ function Services() {
   const handleAddService = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://127.0.0.1:5555/services", {
+      const response = await fetch("https://garage-backend-59fg.onrender.com/services", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function Services() {
 
   const handleDeleteService = async (id) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5555/services/${id}`, {
+      const response = await fetch(`https://garage-backend-59fg.onrender.com/services/${id}`, {
         method: "DELETE",
         credentials: "include", // This is crucial for sending cookies
         headers: {
@@ -79,7 +79,7 @@ function Services() {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://127.0.0.1:5555/services/${serviceToUpdate}`,
+        `https://garage-backend-59fg.onrender.com/services/${serviceToUpdate}`,
         {
           method: "PATCH",
           headers: {

@@ -9,7 +9,7 @@ function Mechanics() {
     const [creating, setCreating] = useState(false)
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5555/mechanics')
+        fetch('https://garage-backend-59fg.onrender.com/mechanics')
         .then((response) =>{
             if (!response.ok) {
                 throw new Error("Failed to GET mechanics data");

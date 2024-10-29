@@ -12,7 +12,7 @@ const About = () => {
         // Fetch services from the API endpoint
         const fetchServices = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5555/services'); // Adjust the endpoint as needed
+                const response = await fetch('https://garage-backend-59fg.onrender.com/services'); // Adjust the endpoint as needed
                 if (!response.ok) {
                     throw new Error(`Could not retrieve Services data! Status: ${response.status}`);
                 }

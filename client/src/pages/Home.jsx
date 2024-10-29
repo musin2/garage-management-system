@@ -17,7 +17,7 @@ function Home({ setRole, role, handleLogout }) {
 
   // CHECK IF LOGGED IN => NAVIGATE TO LOG IN PAGE
   useEffect(() => {
-    fetch("http://127.0.0.1:5555/services")
+    fetch("https://garage-backend-59fg.onrender.com/services")
       .then((response) => {
         if (!response.ok) {
           throw new Error(

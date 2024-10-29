@@ -9,7 +9,7 @@ const Logout = ({ setRole, handleLogout }) => {
     const handleLogoutClick = async () => {
         try {
             // Call the logout API
-            await axios.post('http://127.0.0.1:5555/logout', {}, { withCredentials: true });
+            await axios.post('https://garage-backend-59fg.onrender.com/logout', {}, { withCredentials: true });
 
             // Remove all user-related cookies
             Cookies.remove("user_id");

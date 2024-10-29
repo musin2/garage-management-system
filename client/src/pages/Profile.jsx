@@ -16,7 +16,7 @@ function Profile() {
 
   // Fetch appointments
   useEffect(() => {
-    fetch('http://127.0.0.1:5555/appointments')
+    fetch('https://garage-backend-59fg.onrender.com/appointments')
       .then(response => {
         if (!response.ok) {
           throw new Error(`Could not GET Appointments data!: ${response.status}`);
@@ -50,7 +50,7 @@ function Profile() {
     e.preventDefault();
     const userId = Cookies.get('user_id');
 
-    fetch(`http://127.0.0.1:5555/users/${userId}`, {
+    fetch(`https://garage-backend-59fg.onrender.com/${userId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

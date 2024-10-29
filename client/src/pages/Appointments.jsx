@@ -12,7 +12,7 @@ function Appointments() {
   // Fetch existing appointments
   const fetchAppointments = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5555/appointments");
+      const response = await fetch("https://garage-backend-59fg.onrender.com/appointments");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -27,7 +27,7 @@ function Appointments() {
   // Update appointment status
   const updateAppointmentStatus = async (id, newStatus) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5555/appointments/${id}`, {
+      const response = await fetch(`https://garage-backend-59fg.onrender.com/appointments/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

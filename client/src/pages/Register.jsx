@@ -27,7 +27,7 @@ const Register = ({ setRole }) => {
 
   const handleSubmit = (values, { setSubmitting, setStatus }) => {
     axios
-      .post("http://127.0.0.1:5555/register", values)
+      .post("https://garage-backend-59fg.onrender.com/register", values)
       .then((response) => {
         alert(response.data.message);
         setStatus({ success: true });

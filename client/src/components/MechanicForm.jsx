@@ -12,7 +12,7 @@ function MechanicForm() {
       phone_number,
     };
 
-    fetch("http://127.0.0.1:5555/mechanics", {
+    fetch("https://garage-backend-59fg.onrender.com/mechanics", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newMechanic),
