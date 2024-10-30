@@ -31,7 +31,7 @@ function MechanicForm() {
          console.log(data)
         document.getElementById("mForm").reset();
           // Delay navigation to ensure alert fully displays
-        setTimeout(() => navigate("/manage-mechanics", { replace: true }), 400);
+        setTimeout(() => navigate("/home", { replace: true }), 400);
         })
       .catch((error) => console.error(error.message));
   }
