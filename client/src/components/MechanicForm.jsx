@@ -27,14 +27,15 @@ function MechanicForm() {
         return response.json();
       })
       .then((data) =>{
-         alert(`Mechanic added ${data}`)
+         alert(`Mechanic added ${data.name}`)
          console.log(data)
+        document.getElementById("mForm").reset();
           navigate("/manage-mechanics");})
       .catch((error) => console.error(error.message));
   }
   return (
     <>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" id="mForm" onSubmit={handleSubmit}>
         <div className="row m-3">
           <div className="col-2">
             <label htmlFor="name">Name</label>

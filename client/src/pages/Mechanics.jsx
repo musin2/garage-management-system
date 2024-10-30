@@ -5,7 +5,7 @@ import "../css/mechanics.css"; // Update the path to the correct location
 
 
 function Mechanics() {
-    const [mechanics, setMechanics] = useState([])    //potential naming issue****
+    const [mechanicData, setMechanics] = useState([])    //potential naming issue****
     const [creating, setCreating] = useState(false)
 
     useEffect(() => {
@@ -36,7 +36,7 @@ function Mechanics() {
                     </tr>
                 </thead>
                 <tbody>
-                    {mechanics.map((mech)=>{
+                    {mechanicData.map((mech)=>{
                         return <tr key={mech.id}>
                             <td>{mech.name}</td>
                             <td>{mech.phone_number}</td>
