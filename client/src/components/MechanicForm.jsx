@@ -30,7 +30,8 @@ function MechanicForm() {
          alert(`Mechanic added ${data.name}`)
          console.log(data)
         document.getElementById("mForm").reset();
-          navigate("/manage-mechanics", { replace: true });
+          // Delay navigation to ensure alert fully displays
+        setTimeout(() => navigate("/manage-mechanics", { replace: true }), 400);
         })
       .catch((error) => console.error(error.message));
   }
