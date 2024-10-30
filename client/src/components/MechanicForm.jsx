@@ -29,9 +29,7 @@ function MechanicForm() {
       .then((data) =>{
          alert(`Mechanic added ${data.name}`)
          console.log(data)
-        document.getElementById("mForm").reset();
-          // Delay navigation to ensure alert fully displays
-        setTimeout(() => navigate("/home", { replace: true }), 400);
+        window.location.reload()
         })
       .catch((error) => console.error(error.message));
   }
