@@ -30,7 +30,8 @@ function MechanicForm() {
          alert(`Mechanic added ${data.name}`)
          console.log(data)
         document.getElementById("mForm").reset();
-          navigate("/manage-mechanics");})
+          navigate("/manage-mechanics", { replace: true });
+        })
       .catch((error) => console.error(error.message));
   }
   return (
