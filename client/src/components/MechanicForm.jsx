@@ -29,6 +29,7 @@ function MechanicForm() {
       .then((data) =>{
          alert(`Mechanic added ${data.name}`)
          console.log(data)
+        //  reload the page discarding the POST data (perform a GET request)
         window.location.href = window.location.href;
         })
       .catch((error) => console.error(error.message));
