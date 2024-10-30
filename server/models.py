@@ -136,7 +136,7 @@ class Appointment(db.Model):
     def to_dict(self):
         return {
         'id': self.id,
-        'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
+        'service_date': self.service_date.strftime('%Y-%m-%d %H:%M:%S'),
         'status': self.status,
         'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S'),  # Formatting date
         'user': {
