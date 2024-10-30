@@ -28,7 +28,7 @@ function MechanicForm() {
       })
       .then((data) =>{
          console.log(data)
-          navigate("/manage-mechanics")})
+          navigate("/manage-mechanics");})
       .catch((error) => console.error(error.message));
   }
   return (
