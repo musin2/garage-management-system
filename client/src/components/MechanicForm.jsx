@@ -1,10 +1,12 @@
 import { useState } from "react";
 import "../css/mechanic_form.css"; // Update the path to the correct location
+import { useNavigate } from "react-router-dom";
 
 
 function MechanicForm() {
   const [name, setMName] = useState("");
   const [phone_number, setMNumber] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,7 +26,9 @@ function MechanicForm() {
         }
         return response.json();
       })
-      .then((data) => console.log(data))
+      .then((data) =>{
+         console.log(data)
+          navigate("/manage-mechanics")})
       .catch((error) => console.error(error.message));
   }
   return (
