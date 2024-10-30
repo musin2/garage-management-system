@@ -27,7 +27,8 @@ function MechanicForm() {
         return response.json();
       })
       .then((data) =>{
-         alert("Mechanic added",data)
+         alert(`Mechanic added ${data}`)
+         console.log(data)
           navigate("/manage-mechanics");})
       .catch((error) => console.error(error.message));
   }
