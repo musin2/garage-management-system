@@ -6,7 +6,8 @@ function MechanicForm() {
   const [name, setMName] = useState("");
   const [phone_number, setMNumber] = useState("");
 
-  function handleSubmit() {
+  function handleSubmit(e) {
+    e.preventDefault();
     let newMechanic = {
       name,
       phone_number,

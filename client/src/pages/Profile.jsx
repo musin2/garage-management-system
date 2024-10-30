@@ -50,7 +50,7 @@ function Profile() {
     e.preventDefault();
     const userId = Cookies.get('user_id');
 
-    fetch(`https://garage-backend-59fg.onrender.com/${userId}`, {
+    fetch(`https://garage-backend-59fg.onrender.com/users/${userId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
